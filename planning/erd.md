@@ -10,4 +10,4 @@ id, creator_id(user_id), name, description, start_date, end_date, venue, street,
 - **edit/delete requests table
 id, user_requested_id (user_id), creator_id(of that map, user_id), request_content, implemented (boolean)
 
-[ERD](/docs/erd.png)
+[ERD]("https://github.com/Britt4444/LHL-midterm-project/blob/master/docs/erd.png")
