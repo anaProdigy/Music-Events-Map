@@ -1,4 +1,3 @@
--- Drop and recreate Users table (Example)
 
 DROP TABLE IF EXISTS user_events CASCADE;
 CREATE TABLE user_events (
