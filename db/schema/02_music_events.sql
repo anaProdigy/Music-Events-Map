@@ -9,7 +9,7 @@ CREATE TABLE music_events (
   venue VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
   latitude FLOAT NOT NULL,
-  longitude FLOAT NOT NULL
+  longitude FLOAT NOT NULL,
   event_link_url VARCHAR(255),
-  event_thumbnail_url VARCHAR(255),
+  event_thumbnail_url VARCHAR(255)
 );
