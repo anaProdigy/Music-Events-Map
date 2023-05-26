@@ -1,3 +1,21 @@
--- Users table seeds here (Example)
-INSERT INTO users (name) VALUES ('Alice');
-INSERT INTO users (name) VALUES ('Kira');
+INSERT INTO users (name, email, password) VALUES ('Alice', 'Christy_Bullock7905@xqj6f.directory', 'Zrb?9Fv2');
+INSERT INTO users (name, email, password) VALUES ('Kira', 'Gina_Richards3697@jcf8v.us','^+BJ*9zx');
+INSERT INTO users (name, email, password) VALUES ('Roger', 'Roger_Appleton3799@ckzyi.works','>b3.yDVk');
+INSERT INTO users (name, email, password) VALUES ('Kamari', 'Amy_Buckley9078@bqkv0.sites','Mt@f&]93');
+INSERT INTO users (name, email, password) VALUES ('Joseph', 'Joseph_Verdon1033@yafr7.center','FNGkh?8+');
+INSERT INTO users (name, email, password) VALUES ('Teagan', 'Teagan_Clark4785@gnjps.video','W8v.faFd');
+INSERT INTO users (name, email, password) VALUES ('Tania', 'Tania_Weasley653@1wa8o.auction','B4]X9eMj');
+INSERT INTO users (name, email, password) VALUES ('Mark', 'Mark_Osmond2052@bu2lo.zone','TLYK6k+M');
+INSERT INTO users (name, email, password) VALUES ('Kieth', 'Kieth_Cooper2690@cdpfn.audio','[J4r2Jme');
+INSERT INTO users (name, email, password) VALUES ('Stella', 'Stella_Doherty1598@xqj6f.net','p>t3^LK%');
+INSERT INTO users (name, email, password) VALUES ('May', 'Maya_Whatson9566@yafr7.info','35@3PbZq');
+INSERT INTO users (name, email, password) VALUES ('Mona', 'Mona_Fall2924@nmz0p.info','!A(yS++6');
+INSERT INTO users (name, email, password) VALUES ('Audrey', 'Audrey_Saunders7898@v1wn5.online','7*^+@sT!');
+INSERT INTO users (name, email, password) VALUES ('Chester', 'Chester_Campbell3407@gnjps.club','VGU^dz4}');
+INSERT INTO users (name, email, password) VALUES ('Joshua', 'Josh_Whitehouse3383@lyvnc.business','CsfnSs%6');
+INSERT INTO users (name, email, password) VALUES ('Noor', 'Boris_Wilkinson8020@cdpfn.store','(]a53]P@');
+INSERT INTO users (name, email, password) VALUES ('Daniel', 'Danny_Rivers2673@qu9ml.info','k)t>S}5n');
+INSERT INTO users (name, email, password) VALUES ('Maria', 'Maria_Rogers3654@iaart.audio','S(dV!b4>');
+INSERT INTO users (name, email, password) VALUES ('Kirsten', 'Kirsten_Maxwell4777@nb44i.works','gzZtf7{N');
+INSERT INTO users (name, email, password) VALUES ('Maribel', 'Maribel_Bradley6073@xtwt3.pro','7{p&p?Xy');
+

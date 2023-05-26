@@ -1,12 +1,12 @@
 {
   "name": "node-skeleton",
   "version": "1.0.0",
-  "description": "",
+  "description": "LHL Node Skeleton =========",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "local": "./node_modules/.bin/nodemon -L --ignore public/",
+    "local": "nodemon -L --ignore public/",
     "db:reset": "node bin/resetdb.js"
   },
   "author": "Lighthouse Labs",
@@ -14,13 +14,29 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "dotenv": "^2.0.0",
-    "ejs": "^2.6.2",
-    "express": "^4.17.1",
-    "morgan": "^1.9.1",
-    "pg": "^8.5.0",
-    "sass": "^1.35.1"
+    "ejs": "^2.7.4",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.0",
+    "sass": "^1.62.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.10"
-  }
+    "nodemon": "^2.0.22"
+  },
+  "bin": {
+    "node-skeleton": "resetdb.js"
+  },
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Britt4444/LHL-midterm-project.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Britt4444/LHL-midterm-project/issues"
+  },
+  "homepage": "https://github.com/Britt4444/LHL-midterm-project#readme"
 }
