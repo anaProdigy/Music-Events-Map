@@ -1,0 +1,44 @@
+.add-event-section {
+  padding: 20px;
+}
+
+#event-form {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 20px;
+    }
+
+   
+
+    .event-input[type="text"],
+    #description {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      margin-left:10px;
+    }
+
+    .add-event, .cancel-event{
+      height: 47px;
+      width:60px;
+      margin-left:10px;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+   
+    .add-event{
+      background: #2196F3;
+    }
+    .cancel-event {
+      background: orangered;
+    }
+
+     .add-event :hover {
+       background:#0b7dda;
+    }
+     .cancel-event:hover {
+       background: red;
+    }

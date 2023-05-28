@@ -11,17 +11,48 @@
   <link rel="stylesheet" crossorigin="" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" crossorigin=""></script>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
   <link rel="stylesheet" href="/vendor/border-box.css" />
   <link rel="stylesheet" href="/styles/main.css" />
   <link rel="stylesheet" href="/styles/layout.css" />
+  <link rel="stylesheet" href="/styles/header.css" />
+  <link rel="stylesheet" href="/styles/add-event-form.css" />
 
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script defer src="/scripts/app.js"></script>
 </head>
 
 <body>
-  <h1>Have fun! 🥔</h1>
+   <div class="nav">
+      <div class="nav-left">
+        <h1 class="logo">Live Music Events</h1>
+        <!-- <img src="./styles/icons/music.png" alt="Dancing people" > -->
+      <form class="search-form"  action="">
+        <input class="search-input" type="text" placeholder="Search by city" name="search">
+        <button class = "search-button" type="submit"><i class="fa fa-search"></i></button>
+      </form>
+          
+      </div>
+      <div class="nav-right">
+        <button class = "login-signup" id="login">LOGIN</button>
+        <button class = "login-signup" id="signup">SIGNUP</button>   
+      </div>
+    </div>
+  </nav>
+
+  <section class="add-event-section">
+    <form id="event-form">
+      <input class="event-input" type="text" id="name" placeholder="event name" name="name" required>
+
+      <input class="event-input" type="text" id="city" placeholder="city" name="city" required>
+
+      <textarea id="description" placeholder="description" name="description" required></textarea>
+
+      <button class = "add-event" type="submit">Add event</button>
+      <button class = "cancel-event" type="button">Cancel</button>
+    </form>
+  </section>
 
   <div id="map"></div>
 </body>
