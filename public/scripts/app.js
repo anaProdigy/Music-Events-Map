@@ -9,6 +9,19 @@ L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 
 L.marker([52.268112, -113.811241]).addTo(map)
 
+// Fetch all events and add markers THIS DOESNT WORK YET
+// $.get('/api/events', function(events) {
+//   events.forEach(event => {
+//     const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
+//     marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
+//   });
+// }).fail(function(err) {
+//   console.error('Error fetching events:', err);
+// });
+
+
+
+
 let markersGroup = L.layerGroup();
 map.addLayer(markersGroup);
 
