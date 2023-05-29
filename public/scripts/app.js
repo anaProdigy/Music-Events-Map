@@ -125,7 +125,7 @@ $(document).ready(() => {
     // to remove marker and close form when 'cancel' button is clicked
     $('.cancel-event').click(function () {
       if ($('.add-event-section').is(":visible")) {
-        $('.add-event-section').slideToggle();
+        $('.add-event-section').hide(500);
       };
       map.removeLayer(marker);
       return;
