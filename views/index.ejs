@@ -8,20 +8,28 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta name="viewport" content="width=device-width, initial-scale=1.0" >
 
-  <link rel="stylesheet" crossorigin="" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <!-- external scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" crossorigin=""></script>
 
+  <!-- internal scripts -->
+  <script defer src="/scripts/app.js"></script>
+  <script defer src="/scripts/users.js"></script>
+
+  <!-- external CSS -->
+  <link rel="stylesheet" crossorigin="" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
   <link rel="stylesheet" href="/vendor/border-box.css" />
+
+  <!-- internal CSS -->
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/layout.css" />
   <link rel="stylesheet" href="./styles/header.css" />
   <link rel="stylesheet" href="./styles/add-event-form.css" />
   <link rel="stylesheet" href="./styles/new-marker-popup.css" />
 
-  <script src="/vendor/jquery-3.0.0.js"></script>
-  <script defer src="/scripts/app.js"></script>
 </head>
 
 <body>
@@ -46,9 +54,23 @@
     <form id="event-form">
       <input class="event-input" type="text" id="name" placeholder="event name" name="name" required>
 
+      <input class="event-input" type="text" id="venue" name="venue" placeholder="venue" required>
+
       <input class="event-input" type="text" id="city" placeholder="city" name="city" required>
 
-      <textarea id="description" placeholder="description" name="description" required></textarea>
+      <textarea id="description" placeholder="event description" name="description" required></textarea>
+
+      <input class="event-input" type="date" id="start-date" name="start-date" placeholder="start date" required>
+
+      <input class="event-input" type="date" id="end-date" name="end-date" placeholder="end date" required>
+
+      <input class="event-input" type="number" id="latitude" name="latitude" readonly>
+
+      <input class="event-input" type="number" id="longitude" name="longitude" readonly>
+
+      <input class="event-input" type="text" id="event-link" name="event-link" placeholder="event link">
+
+      <input class="event-input" type="text" id="venue" name="event-thumbnail" placeholder="add event image or flyer">
 
       <button class = "add-event" type="submit">Add event</button>
       <button class = "cancel-event" type="button">Cancel</button>
