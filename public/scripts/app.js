@@ -85,7 +85,7 @@ $(document).ready(() => {
     console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
 
     if (markersCount < markersMax) {
-      let marker = L.marker(e.latlng).addTo(markersGroup);
+      let marker = L.marker(e.latlng).addTo(markersGroup)
         .bindPopup('Add event to this location?<br><button type="submit">Add</button>')
         .openPopup();
       return;
