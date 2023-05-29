@@ -67,20 +67,20 @@
   <!-- DROPDOWM CREATED EVENTS -->
   <div class = "container">
     <div class = "container-dropdowns">
- <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="created-events-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       <div class="dropdown">
+         <button class="btn btn-primary dropdown-toggle" type="button" id="created-events-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Created Events
-    </button>
-    <div class="dropdown-menu" aria-labelledby="created-events-dropdown" id="created-events">
+         </button>
+       <div class="dropdown-menu" aria-labelledby="created-events-dropdown" id="created-events">
       <!-- Display created events' details here -->
       <!-- Example event item -->
-      <a class="dropdown-item" href="#">
-        Event 1
+      <!-- <a class="dropdown-item" href="#">
+       
         <div class="float-right">
           <button class="btn btn-sm btn-info edit-event">Edit</button>
           <button class="btn btn-sm btn-danger delete-event">Delete</button>
         </div>
-      </a>
+      </a> -->
     </div>
   </div>
 
@@ -92,7 +92,7 @@
       <!-- Display favorite events' details here -->
       <!-- Example event item -->
       <a class="dropdown-item" href="#">
-        Event 1
+     
         <div class="float-right">
           <button class="btn btn-sm btn-info edit-event">Edit</button>
           <button class="btn btn-sm btn-danger delete-event">Delete</button>
@@ -104,6 +104,89 @@
 <div id="map"></div>
 </div>
   
+
+  <script>
+$(document).ready(function() {
+  let userId = 1; // Replace with the desired user ID
+
+  // Fetch user's created events
+  $.ajax({
+    url: '/api/events',
+    method: 'GET',
+    success: function(response) {
+      console.log('All events:', response.events);
+      // Handle the success response and filter the events by the user ID
+      let events = response.events.filter(function(event) {
+        return event.creator_id === userId;
+      });
+       console.log('Filtered events:', events); 
+      let dropdownMenu = $('#created-events');
+
+      // Check if any events exist
+      if (events.length > 0) {
+        // Clear the dropdown menu
+         dropdownMenu.empty();
+
+        // Iterate over each event and create dropdown items
+        events.forEach(function(event) {
+          let eventItem = $('<a class="dropdown-item" href="#">')
+            .text(event.name)
+            .append('<div class="float-right">' +
+              '<button class="btn btn-sm btn-info edit-event">Edit</button>' +
+              '<button class="btn btn-sm btn-danger delete-event">Delete</button>' +
+              '</div>');
+
+          // Add event data as data attributes to the event item
+          eventItem.data('event', event);
+
+          dropdownMenu.append(eventItem);
+        });
+      } else {
+        // If no events exist, display a message or placeholder item
+        dropdownMenu.html('<span class="dropdown-item">No events found</span>');
+      }
+    },
+    error: function(xhr, status, error) {
+      // Handle the error response
+      console.error('Error fetching events:', error);
+    }
+  });
+
+  // Handle edit event click
+  // $(document).on('click', '.edit-event', function(e) {
+  //   e.preventDefault();
+  //   let eventItem = $(this).closest('.dropdown-item');
+  //   let event = eventItem.data('event');
+  //   // Perform edit event action with the event data
+  //   console.log('Edit event:', event);
+  // });
+
+  // Handle delete event click
+  $(document).on('click', '.delete-event', function(e) {
+    e.preventDefault();
+    let eventItem = $(this).closest('.dropdown-item');
+    let event = eventItem.data('event');
+    // Perform delete event action with the event data
+    console.log('Delete event:', event);
+  });
+
+  //  $.ajax({
+  //       url: '/api/events/' + eventId,
+  //       method: 'DELETE',
+  //       success: function(response) {
+  //         // Handle the success response
+  //         console.log('Event deleted:', response);
+  //         // Update the UI or perform any necessary actions
+  //       },
+  //       error: function(xhr, status, error) {
+  //         // Handle the error response
+  //         console.error('Error deleting event:', error);
+  //       }
+  //     });
+});
+  </script>
+
+
 </body>
 
 </html>
