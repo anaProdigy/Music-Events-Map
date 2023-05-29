@@ -1,11 +1,15 @@
 // See: https://sass-lang.com/
 
-body,
 html {
-  margin: 0;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 #map { 
-  height: 400px;
-  width: 80%;
+  height: 600px;
+  width: 100%;
 }
