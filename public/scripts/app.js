@@ -118,6 +118,8 @@ $(document).ready(() => {
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
       });
     };
     // to remove marker and close form when 'cancel' button is clicked
@@ -130,4 +132,5 @@ $(document).ready(() => {
     });
 
   });
+
 });
