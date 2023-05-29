@@ -86,11 +86,36 @@ $(document).ready(() => {
 
     if (markersCount < markersMax) {
       let marker = L.marker(e.latlng).addTo(markersGroup)
-        .bindPopup('Add event to this location?<br><button type="submit">Add</button>')
+        .bindPopup(`Add event to this location?<br><button type="submit" class='marker-submit-button'>Add</button>
+        <button type="delete" class='marker-delete-button'>No</button>`);
+      marker.on("popupopen", onPopupOpen)
+      // marker.on('popupclose', onPopupClose)
         .openPopup();
       return;
     }
 
-    markersGroup.clearLayers();
+    // Function to handle add event/delete marker on marker popup open
+    function onPopupOpen() {
+
+      let tempMarker = this;
+
+      // To remove marker on click of delete button in the popup of marker
+      $(".marker-delete-button:visible").click(function () {
+        map.removeLayer(tempMarker);
+      });
+      // to toggle add event form on click of add button in popup
+      $(".marker-submit-button:visible").click(function () {
+        $('.add-event-section').slideToggle();
+        map.closePopup();
+        $('#name').focus();
+      });
+    }
+
+    // function onPopupClose() {
+    //   // to remove marker on click of delete button in the popup of marker
+    //   map.removeLayer(tempMarker);
+    // }
+
+    // markersGroup.clearLayers();
   });
 });
