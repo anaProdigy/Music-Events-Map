@@ -43,7 +43,7 @@ app.use('/api/users', userApiRoutes);
 app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/api/events', eventsRoutes);
-app.use('/login/:user_id', loginRoutes)
+app.use('/login', loginRoutes)
 // Note: mount other resources here, using the same pattern above
 
 // Home page
