@@ -20,8 +20,17 @@
   <link rel="stylesheet" href="./styles/add-event-form.css" />
   <link rel="stylesheet" href="./styles/new-marker-popup.css" />
 
+  <!-- bootstrap linking -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
   <script src="/vendor/jquery-3.0.0.js"></script>
+  
+
   <script defer src="/scripts/app.js"></script>
+<!-- bootstrap linking -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -55,7 +64,46 @@
     </form>
   </section>
 
-  <div id="map"></div>
+  <!-- DROPDOWM CREATED EVENTS -->
+  <div class = "container">
+    <div class = "container-dropdowns">
+ <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="created-events-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Created Events
+    </button>
+    <div class="dropdown-menu" aria-labelledby="created-events-dropdown" id="created-events">
+      <!-- Display created events' details here -->
+      <!-- Example event item -->
+      <a class="dropdown-item" href="#">
+        Event 1
+        <div class="float-right">
+          <button class="btn btn-sm btn-info edit-event">Edit</button>
+          <button class="btn btn-sm btn-danger delete-event">Delete</button>
+        </div>
+      </a>
+    </div>
+  </div>
+
+    <div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="favorite-events-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Favorite Events
+    </button>
+    <div class="dropdown-menu" aria-labelledby="favorite-events-dropdown" id="favorite-events">
+      <!-- Display favorite events' details here -->
+      <!-- Example event item -->
+      <a class="dropdown-item" href="#">
+        Event 1
+        <div class="float-right">
+          <button class="btn btn-sm btn-info edit-event">Edit</button>
+          <button class="btn btn-sm btn-danger delete-event">Delete</button>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<div id="map"></div>
+</div>
+  
 </body>
 
 </html>

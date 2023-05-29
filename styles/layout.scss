@@ -8,7 +8,10 @@ html {
 *:after {
   box-sizing: inherit;
 }
-
+.container {
+  display: flex;
+  
+}
 #map { 
   height: 600px;
   width: 100%;
