@@ -2,11 +2,16 @@
 
 .leaflet-popup-content-wrapper {
 
+
   .marker-submit-button {
     background:#0b7dda;
+    border-radius: 5px;
+    color: #fff;
   }
 
   .marker-delete-button {
     background: red;
+    border-radius: 5px;
+    color: #fff;
   }
 }
