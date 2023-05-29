@@ -77,6 +77,7 @@ $(document).ready(() => {
   loadEvents();
 
   map.on('click', function (e) {
+    let marker;
     // get the count of currently displayed markers
     let markersCount = markersGroup.getLayers().length;
     let coord = e.latlng;
@@ -85,8 +86,8 @@ $(document).ready(() => {
     console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
 
     if (markersCount < markersMax) {
-      let marker = L.marker(e.latlng).addTo(markersGroup)
-        .bindPopup(`Add event to this location?<br><button type='submit' class='marker-submit-button'>Add</button>
+      marker = L.marker(e.latlng).addTo(markersGroup)
+        .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Add</button>
         <button type='delete' class='marker-delete-button'>No</button>`);
       marker.on('popupopen', onPopupOpen)
         // marker.on('popupclose', onPopupClose)
@@ -119,6 +120,14 @@ $(document).ready(() => {
         $('#name').focus();
       });
     };
+    // to remove marker and close form when 'cancel' button is clicked
+    $('.cancel-event').click(function () {
+      if ($('.add-event-section').is(":visible")) {
+        $('.add-event-section').slideToggle();
+      };
+      map.removeLayer(marker);
+      return;
+    });
 
   });
 });
