@@ -38,6 +38,26 @@ router.post('/', (req, res) => {
     });
 });
 
+router.put('/:eventId', (req, res) => {
+  const userId = req.cookies.user_id;
+  const eventId = req.params.eventId;
+  if (!userId) {
+    return res.send({ error: "error" });
+  }
+  const event = req.body;
+  event.creator_id = userId;
+  eventQueries
+    .editEvent(eventId)
+  .then((event) => {
+    console.log("In promise", event);
+    res.redirect("/");
+  })
+  .catch((e) => {
+    console.error(e);
+    res.send(e);
+  });
+});
+
 router.delete('/:eventId', (req, res) => {
   const eventId = req.params.eventId;
 
