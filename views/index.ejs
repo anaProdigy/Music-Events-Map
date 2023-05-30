@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="./styles/header.css" />
   <link rel="stylesheet" href="./styles/add-event-form.css" />
   <link rel="stylesheet" href="./styles/new-marker-popup.css" />
-  
+
     <!-- external scripts -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" crossorigin=""></script>
@@ -33,8 +33,8 @@
   <!-- internal scripts -->
   <script defer src="/scripts/app.js"></script>
   <script defer src="/scripts/users.js"></script>
-  <script defer src="/scripts/delete.js"></script>
-  
+  <!-- <script defer src="/scripts/delete.js"></script> -->
+
 </head>
 
 <body>
@@ -55,28 +55,19 @@
     </div>
   </nav>
 
+  <!-- Add new event form -->
   <section class="add-event-section">
-    <form id="event-form">
+    <form id="event-form" action="/events" method="POST">
       <input class="event-input" type="text" id="name" placeholder="event name" name="name" required>
-
       <input class="event-input" type="text" id="venue" name="venue" placeholder="venue" required>
-
       <input class="event-input" type="text" id="city" placeholder="city" name="city" required>
-
       <textarea id="description" placeholder="event description" name="description" required></textarea>
-
       <input class="event-input" type="date" id="start-date" name="start-date" placeholder="start date" required>
-
       <input class="event-input" type="date" id="end-date" name="end-date" placeholder="end date" required>
-
       <input class="event-input" type="number" id="latitude" name="latitude" readonly>
-
       <input class="event-input" type="number" id="longitude" name="longitude" readonly>
-
       <input class="event-input" type="text" id="event-link" name="event-link" placeholder="event link">
-
       <input class="event-input" type="text" id="venue" name="event-thumbnail" placeholder="add event image or flyer">
-
       <button class = "add-event" type="submit">Add event</button>
       <button class = "cancel-event" type="button">Cancel</button>
     </form>
@@ -93,7 +84,7 @@
       <!-- Display created events' details here -->
       <!-- Example event item -->
       <!-- <a class="dropdown-item" href="#">
-       
+
         <div class="float-right">
           <button class="btn btn-sm btn-info edit-event">Edit</button>
           <button class="btn btn-sm btn-danger delete-event">Delete</button>
@@ -110,7 +101,7 @@
       <!-- Display favorite events' details here -->
       <!-- Example event item -->
       <a class="dropdown-item" href="#">
-     
+
         <div class="float-right">
           <button class="btn btn-sm btn-info edit-event">Edit</button>
           <button class="btn btn-sm btn-danger delete-event">Delete</button>
@@ -121,7 +112,7 @@
 </div>
 <div id="map"></div>
 </div>
-  
+
 
   <script>
 
