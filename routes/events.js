@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/events', (req, res) => {
   const userId = req.session.userId;
   if (!userId) {
     return res.send({ error: "error" });
