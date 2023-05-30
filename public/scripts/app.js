@@ -54,7 +54,7 @@ $(document).ready(() => {
   map.addLayer(markersGroup);
 
   const renderMarkers = function (events) {
-    
+
 
     // create LatLongBounds object so we can zoom the map to fit the set of location events
     const bounds = L.latLngBounds();
@@ -65,7 +65,7 @@ $(document).ready(() => {
 
       //add marker to markers object with event id as a key, need to handle deliting them
       markers[event.id] = marker
-    
+
       // extend latLndBounds with coordinates
       bounds.extend([event.latitude, event.longitude]);
     }
@@ -125,8 +125,8 @@ $(document).ready(() => {
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
-        document.getElementById('latitude').value = lat;
-        document.getElementById('longitude').value = lng;
+        $('#latitude').val(lat);
+        $('#longitude').val(lng);
       });
     };
     // to remove marker and close form when 'cancel' button is clicked
@@ -138,7 +138,5 @@ $(document).ready(() => {
       map.removeLayer(marker);
       return;
     });
-
   });
-
 });

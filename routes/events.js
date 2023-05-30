@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:eventId', (req, res) => {
+router.post('/:eventId', (req, res) => {
   const userId = req.cookies.user_id;
   const eventId = req.params.eventId;
   if (!userId) {
@@ -48,14 +48,14 @@ router.put('/:eventId', (req, res) => {
   event.creator_id = userId;
   eventQueries
     .editEvent(eventId)
-  .then((event) => {
-    console.log("In promise", event);
-    res.redirect("/");
-  })
-  .catch((e) => {
-    console.error(e);
-    res.send(e);
-  });
+    .then((event) => {
+      console.log("In promise", event);
+      res.redirect("/");
+    })
+    .catch((e) => {
+      console.error(e);
+      res.send(e);
+    });
 });
 
 router.delete('/:eventId', (req, res) => {
