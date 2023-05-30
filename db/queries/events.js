@@ -9,4 +9,15 @@ const getEvents = () => {
     });
 };
 
-module.exports = { getEvents };
+
+const deleteEvent = (eventId) => {
+  return db.query('DELETE FROM music_events WHERE id = $1', [eventId])
+    .then(() => {
+      return 'Event deleted successfully';
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+module.exports = { getEvents, deleteEvent };
