@@ -71,6 +71,7 @@ $(document).ready(() => {
     }
     // fit map to bounds
     map.fitBounds(bounds);
+    console.log("markersLength", Object.keys(markers).length)
   };
 
   const loadEvents = async function () {
@@ -81,6 +82,28 @@ $(document).ready(() => {
   };
 
   loadEvents();
+
+  //ADD EVENTS
+  $('#event-form').submit(function(e) {
+    console.log('Button clicked, performing ajax call...');
+    e.preventDefault();
+
+    const form = $(this);
+    const data = $(this).serialize();
+    // console.log('data: ', data);
+
+    $.post('/api/events/', data, function(response) {
+      console.log('Sending form data to server');
+      // clear form
+      form.trigger('reset');
+      form.hide(500);
+      console.log(response);
+
+      //load all events plus newly added event
+      loadEvents();
+    });
+  });
+
 
   map.on('click', function (e) {
     let marker;
