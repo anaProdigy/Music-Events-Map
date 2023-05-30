@@ -10,7 +10,14 @@ html {
 }
 .container {
   display: flex;
-  
+}
+
+.container-dropdowns {
+  padding-right:30px;
+}
+
+.dropdown {
+  padding-bottom:20px;
 }
 #map { 
   height: 600px;

@@ -92,6 +92,7 @@ $(document).ready(() => {
       marker.on('popupopen', onPopupOpen)
         // marker.on('popupclose', onPopupClose)
         .openPopup();
+
       marker._popup._closeButton.onclick = function () {
         if ($('.add-event-section').is(":visible")) {
           $('.add-event-section').slideToggle();

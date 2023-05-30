@@ -14,4 +14,17 @@ router.get('/', (req, res) => {
     });
 });
 
+
+router.delete('/:eventId', (req, res) => {
+  const eventId = req.params.eventId;
+
+  eventQueries.deleteEvent(eventId)
+    .then(() => {
+      res.json({ message: 'Event deleted successfully' });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 module.exports = router;
