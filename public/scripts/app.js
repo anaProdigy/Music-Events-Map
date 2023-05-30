@@ -1,4 +1,5 @@
 // Client facing scripts here
+//global object to store created marker, need for deleting them
 const markers = {};
 
 $(document).ready(() => {
@@ -62,10 +63,9 @@ $(document).ready(() => {
       const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
       marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
 
-      //ADD MARKER TO MARKERS OBJECT????????
-      
+      //add marker to markers object with event id as a key, need to handle deliting them
       markers[event.id] = marker
-      console.log("markers", markers)
+    
       // extend latLndBounds with coordinates
       bounds.extend([event.latitude, event.longitude]);
     }

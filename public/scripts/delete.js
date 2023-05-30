@@ -17,7 +17,7 @@ $(document).ready(function() {
     return "";
   }
 
-  
+  //convert from string to number
   let userId = parseInt(getCookie("user_id")); 
    // console.log("user_id", userId)
 
@@ -82,15 +82,11 @@ $(document).ready(function() {
         method: 'DELETE',
         success: function(response) {
           // Handle the success response
-          // console.log('Event deleted:', response);
-
+          //remove event from db and list
           eventItem.remove();
 
-          //TRYING TO REMOVE MARKER DOESNT WORK YET
-      
+          //REMOVE MARKER 
           markers[event.id].remove();
-        
-
         },
         error: function(xhr, status, error) {
           // Handle the error response
@@ -99,6 +95,4 @@ $(document).ready(function() {
       });
     }
   });
-
-
 });
