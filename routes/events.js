@@ -15,19 +15,22 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // console.log(req.cookies);
+
+  console.log("we are hiiting this route");
   const userId = req.cookies.user_id;
   if (!userId) {
     return res.send({ error: "error" });
   }
-  // console.log(req.body);
+  // // console.log(req.body);
   const newEvent = req.body;
   newEvent.creator_id = userId;
-  // console.log('newEvent: ', newEvent);
+  console.log('newEvent: ', newEvent);
   eventQueries
     .addEvent(newEvent)
     .then((event) => {
-      res.send(event);
+      console.log("In promise", event);
+      res.redirect("/");
+      //res.send(event); //this can be for AJAX
     })
     .catch((e) => {
       console.error(e);
