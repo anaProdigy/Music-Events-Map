@@ -14,12 +14,12 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/events', (req, res) => {
+router.post('/', (req, res) => {
   const userId = req.session.userId;
   if (!userId) {
     return res.send({ error: "error" });
   }
-
+  console.log(req.body);
   const newEvent = req.body;
   newEvent.creator_id = userId;
   eventQueries
