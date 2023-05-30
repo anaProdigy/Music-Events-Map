@@ -15,7 +15,7 @@ const addEvent = function(event) {
   event_link_url, event_thumbnail_url)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
   RETURNING *;`;
-  const queryParams = [event.creator_id, event.name, event.description, event.start_date. event.end_date, event.venue,
+  const queryParams = [event.creator_id, event.name, event.description, event.start_date, event.end_date, event.venue,
     event.city, event.latitude, event.event_link_url, event.event_thumbnail_url];
 
   return db

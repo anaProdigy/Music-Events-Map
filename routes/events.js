@@ -15,13 +15,15 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const userId = req.session.userId;
+  // console.log(req.cookies);
+  const userId = req.cookies.user_id;
   if (!userId) {
     return res.send({ error: "error" });
   }
-  console.log(req.body);
+  // console.log(req.body);
   const newEvent = req.body;
   newEvent.creator_id = userId;
+  // console.log('newEvent: ', newEvent);
   eventQueries
     .addEvent(newEvent)
     .then((event) => {
