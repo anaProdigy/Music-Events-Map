@@ -119,16 +119,19 @@ $(document).ready(() => {
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
       });
     };
     // to remove marker and close form when 'cancel' button is clicked
     $('.cancel-event').click(function () {
       if ($('.add-event-section').is(":visible")) {
-        $('.add-event-section').slideToggle();
+        $('.add-event-section').hide(500);
       };
       map.removeLayer(marker);
       return;
     });
 
   });
+
 });
