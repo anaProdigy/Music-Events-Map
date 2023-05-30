@@ -1,4 +1,6 @@
 // Client facing scripts here
+const markers = {};
+
 $(document).ready(() => {
 
   const markersMax = 2000;
@@ -51,7 +53,7 @@ $(document).ready(() => {
   map.addLayer(markersGroup);
 
   const renderMarkers = function (events) {
-    console.log("events", events)
+    
 
     // create LatLongBounds object so we can zoom the map to fit the set of location events
     const bounds = L.latLngBounds();
@@ -60,6 +62,10 @@ $(document).ready(() => {
       const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
       marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
 
+      //ADD MARKER TO MARKERS OBJECT????????
+      
+      markers[event.id] = marker
+      console.log("markers", markers)
       // extend latLndBounds with coordinates
       bounds.extend([event.latitude, event.longitude]);
     }
