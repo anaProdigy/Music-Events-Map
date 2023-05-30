@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 //return user id number from cookies to make userId dynamic
   function getCookie(cname) {
@@ -18,7 +19,8 @@ $(document).ready(function() {
 
   
   let userId = parseInt(getCookie("user_id")); 
-console.log("user_id", userId)
+   // console.log("user_id", userId)
+
   // Fetch user's created events
   $.ajax({
     url: '/api/events',
@@ -85,8 +87,9 @@ console.log("user_id", userId)
           eventItem.remove();
 
           //TRYING TO REMOVE MARKER DOESNT WORK YET
-          // console.log("DELETE EVENT", event)
-          // map.removeLayer(event.marker);
+      
+          markers[event.id].remove();
+        
 
         },
         error: function(xhr, status, error) {
