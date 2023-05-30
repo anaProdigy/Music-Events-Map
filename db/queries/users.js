@@ -8,4 +8,4 @@ const getUsers = () => {
     });
 };
 
-module.exports = { getUsers, addEvent };
+module.exports = { getUsers };
