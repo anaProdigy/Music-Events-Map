@@ -28,9 +28,14 @@ router.post('/', (req, res) => {
   eventQueries
     .addEvent(newEvent)
     .then((event) => {
-      console.log("In promise", event);
-      res.redirect("/");
-      //res.send(event); //this can be f
+      const response = {
+        event: event,
+        addedEvent: true
+      };
+      res.send(response);
+      // console.log("In promise", event);
+      //  res.redirect("/");
+      // //res.send(event); //this can be for AJAX
     })
     .catch((e) => {
       console.error(e);
