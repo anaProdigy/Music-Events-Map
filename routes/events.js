@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
     .then((event) => {
       console.log("In promise", event);
       res.redirect("/");
-      //res.send(event); //this can be for AJAX
+      //res.send(event); //this can be f
     })
     .catch((e) => {
       console.error(e);
