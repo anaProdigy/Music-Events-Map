@@ -60,13 +60,17 @@ $(document).ready(() => {
     const bounds = L.latLngBounds();
 
     // helper function that determines if a date is before current date
-    const isInThePast = function(date) {
-      const today = new Date().toISOString();
-      return date < today;
+    const isInThePast = function (date) {
+      const today = new Date().toISOString().slice(0, 10);
+
+      if (date < today && date !== today) {
+        return true;
+      }
+      return false;
     };
 
     for (const event of events) {
-      // event.end_date is before today's date, don't display the event
+      // if event.end_date is before today's date, don't display the event
       if (!isInThePast(event.end_date)) {
         const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
         marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
