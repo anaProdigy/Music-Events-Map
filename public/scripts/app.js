@@ -172,5 +172,6 @@ $(document).ready(() => {
       map.removeLayer(marker);
       return;
     });
+    
   });
 });
