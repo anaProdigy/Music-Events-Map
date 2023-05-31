@@ -9,7 +9,7 @@ const getEvents = () => {
     });
 };
 
-const addEvent = function(event) {
+const addEvent = function (event) {
   console.log("EVENT ", event);
   const queryString = `
   INSERT INTO music_events (creator_id, name, description, start_date, end_date, venue, city, latitude, longitude,
@@ -22,11 +22,30 @@ const addEvent = function(event) {
   return db
     .query(queryString, queryParams)
     .then((result) => {
-      if (!result.rows) return null;
       return result.rows;
     })
-    .catch((err) => console.log(err.message));
+    .catch((error) => {
+      throw error;
+    })
 };
+
+const editEvent = (event) => {
+  const queryString = `
+  UPDATE music_events
+  SET creator_id = $1, name = $2, description = $3, start_date = $4, end_date = $5, venue = $6, city = $7, latitude = $8, longitude = $9,
+  event_link_url = $10, event_thumbnail_url = $11)
+  WHERE id = $12`;
+  const queryParams = [event.creator_id, event.name, event.description, event['start-date'], event['end-date'], event.venue,
+  event.city, event.latitude, event.longitude, event['event-link'], event['event-thumbnail'], event.id];
+  return db
+    .query(queryString, queryParams)
+    .then((result) => {
+      return result.rows;
+    })
+    .catch((error) => {
+      throw error;
+    })
+}
 
 
 const deleteEvent = (eventId) => {
@@ -39,4 +58,4 @@ const deleteEvent = (eventId) => {
     });
 };
 
-module.exports = { getEvents, addEvent, deleteEvent };
+module.exports = { getEvents, addEvent, editEvent, deleteEvent };
