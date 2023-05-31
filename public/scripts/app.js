@@ -59,17 +59,27 @@ $(document).ready(() => {
     // create LatLongBounds object so we can zoom the map to fit the set of location events
     const bounds = L.latLngBounds();
 
+    // helper function that determines if a date is before current date
+    const isInThePast = function(date) {
+      const today = new Date().toISOString();
+      return date < today;
+    };
+
     for (const event of events) {
-      const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
-      marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
+      // event.end_date is before today's date, don't display the event
+      if (!isInThePast(event.end_date)) {
+        const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
+        marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
 
-      //add marker to markers object with event id as a key, need to handle deliting them
+        //add marker to markers object with event id as a key, need to handle deliting them
 
-      markers[event.id] = marker;
+        markers[event.id] = marker;
 
-      // extend latLndBounds with coordinates
-      bounds.extend([event.latitude, event.longitude]);
+        // extend latLndBounds with coordinates
+        bounds.extend([event.latitude, event.longitude]);
+      }
     }
+
     // fit map to bounds
     map.fitBounds(bounds);
     console.log("markersLength", Object.keys(markers).length);
