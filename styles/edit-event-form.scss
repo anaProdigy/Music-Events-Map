@@ -1,15 +1,15 @@
-.add-event-section {
+.edit-event-section {
   padding: 20px;
   display: none;
 
-  #event-form {
+  #edit-event-form {
     display: grid; //will need to be properly reformatted later
     margin-bottom: 20px;
 
     .event-input[type="text"],
     .event-input[type="date"],
     .event-input[type="number"],
-    #description {
+    #edit-description {
 
       padding: 5px;
       border: 1px solid #ccc;
@@ -18,8 +18,8 @@
       margin-left: 10px;
     }
 
-    .add-event,
-    .cancel-event {
+    .edit-event,
+    .cancel-edit {
       height: 47px;
       width: 60px;
       margin-left: 10px;
@@ -29,19 +29,19 @@
       cursor: pointer;
     }
 
-    .add-event {
+    .edit-event {
       background: #2196F3;
     }
 
-    .cancel-event {
+    .cancel-edit {
       background: orangered;
     }
 
-    .add-event:hover {
+    .edit-event:hover { //doesn't work
       background: darkblue;
     }
 
-    .cancel-event:hover {
+    .cancel-edit:hover { // doesn't work
       background: red;
     }
   }
