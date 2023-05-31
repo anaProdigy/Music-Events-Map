@@ -73,7 +73,31 @@ $(document).ready(() => {
       // if event.end_date is before today's date, don't display the event
       if (!isInThePast(event.end_date)) {
         const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
-        marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
+        const popupContent = `
+        <h3>${event.name}</h3><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
+        <p>${event.description}<p id="collapsible"><strong>. . .</strong></p>
+        `;
+        const popupExpansion = `
+        <div id="expand">
+          <p><b>Venue:</b> ${event.venue}<br><b>City:</b> ${event.city}<br>
+          <b>Until:</b> ${dayjs(event.end_date).format('MMMM D, YYYY')}<br>
+          <b>Link:</b> <a target="_blank" href=${event.event_link_url}>${event.event_link_url}</a><br>
+          <b>More information:</b><a target="_blank" href=${event.event_thumbnail_url}>${event.event_thumbnail_url}</a></p>
+        </div>
+        `;
+
+        const onPopupOpen = function () {
+          $('#collapsible').click(function (e) {
+            e.preventDefault();
+            if($('#expand').is(':visible')) {
+              $('#expand').hide();
+            } else {
+              $('#expand').show();
+            }
+          });
+        };
+        marker.bindPopup(popupContent + popupExpansion);
+        marker.on('popupopen', onPopupOpen);
 
         //add marker to markers object with event id as a key, need to handle deliting them
 
@@ -121,7 +145,6 @@ $(document).ready(() => {
         .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Add</button>
         <button type='delete' class='marker-delete-button'>No</button>`);
       marker.on('popupopen', onPopupOpen)
-        // marker.on('popupclose', onPopupClose)
         .openPopup();
 
       marker._popup._closeButton.onclick = function () {
@@ -134,7 +157,7 @@ $(document).ready(() => {
     };
 
     // Function to handle add event/delete marker on marker popup open
-    function onPopupOpen() {
+    const onPopupOpen = function () {
 
       let tempMarker = this;
 
