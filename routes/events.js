@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const eventQueries = require('../db/queries/events');
+const methodOverride = require('method-override');
+
+router.use(methodOverride('_method'));
 
 router.get('/', (req, res) => {
   eventQueries.getEvents()
@@ -43,18 +46,21 @@ router.post('/', (req, res) => {
     });
 });
 
-router.post('/:eventId', (req, res) => {
+router.put('/:eventId', (req, res) => {
   const userId = req.cookies.user_id;
   const eventId = req.params.eventId;
   if (!userId) {
     return res.send({ error: "error" });
   }
-  const event = req.body;
-  event.creator_id = userId;
+  req.body.creator_id = user_id;
   eventQueries
     .editEvent(eventId)
     .then((event) => {
-      console.log("In promise", event);
+      const response = {
+        event: event,
+        editedEvent: true
+      };
+      res.send(response);
       res.redirect("/");
     })
     .catch((e) => {
