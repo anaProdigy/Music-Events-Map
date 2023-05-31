@@ -53,8 +53,8 @@ $(document).ready(() => {
   let markersGroup = L.layerGroup();
   map.addLayer(markersGroup);
 
-  const renderMarkers = function(events) {
 
+  const renderMarkers = function(events) {
 
     // create LatLongBounds object so we can zoom the map to fit the set of location events
     const bounds = L.latLngBounds();
@@ -64,6 +64,7 @@ $(document).ready(() => {
       marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
 
       //add marker to markers object with event id as a key, need to handle deliting them
+
       markers[event.id] = marker;
 
       // extend latLndBounds with coordinates
@@ -83,26 +84,7 @@ $(document).ready(() => {
 
   loadEvents();
 
-  //ADD EVENTS
-  $('#event-form').submit(function(e) {
-    console.log('Button clicked, performing ajax call...');
-    e.preventDefault();
 
-    const form = $(this);
-    const data = $(this).serialize();
-    // console.log('data: ', data);
-
-    $.post('/api/events/', data, function(response) {
-      console.log('Sending form data to server');
-      // clear form
-      form.trigger('reset');
-      form.hide(500);
-      console.log(response);
-
-      //load all events plus newly added event
-      loadEvents();
-    });
-  });
   //move marker var outside of event listener
   let marker;
   map.on('click', function(e) {
@@ -150,14 +132,17 @@ $(document).ready(() => {
         };
       });
       // to toggle add event form on click of add button in popup
+
       $('.marker-submit-button:visible').click(function() {
+        //         $(".add-event").html("Add Event"); ???? NEW FUNCTIONALITY??
+
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
         $('#latitude').val(lat);
         $('#longitude').val(lng);
 
-        //remove temp marker
+        //remove marker
         if (!$('.add-event-section').is(":visible")) {
           map.removeLayer(tempMarker);
         }
@@ -172,6 +157,5 @@ $(document).ready(() => {
       map.removeLayer(marker);
       return;
     });
-    
   });
 });

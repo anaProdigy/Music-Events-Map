@@ -141,6 +141,72 @@ $(document).ready(function () {
   });
 
 
+  // Handle edit event click
+  $(document).on('click', '.edit-event', function (e) {
+    $(".add-event").html("Edit Event");
+    // open event form
+    if ($('.add-event-section').is(":hidden")) {
+      $('.add-event-section').slideToggle();
+    }
+    e.preventDefault();
+
+    let eventItem = $(this).closest('.dropdown-item');
+    let event = eventItem.data('event');
+    let startDate = dayjs(event.start_date).format('YYYY-MM-DD');
+    let endDate = dayjs(event.end_date).format('YYYY-MM-DD');
+
+
+    // set fields from event object
+    $('#id').val(event.id);
+    $('#creator_id').val(event.creator_id);
+    $('#name').val(event.name);
+    $('#description').val(event.description);
+    $('#start-date').val(startDate);
+    $('#end-date').val(endDate);
+    $('#venue').val(event.venue);
+    $('#city').val(event.city);
+    $('#latitude').val(event.latitude);
+    $('#longitude').val(event.longitude);
+    $('#event-link').val(event.event_link_url);
+    $('#event-thumbnail').val(event.event_thumbnail_url);
+
+    // to remove marker and close form when 'cancel' button is clicked
+    $('.cancel-event').click(function () {
+      if ($('.add-event-section').is(":visible")) {
+        $('#event-form').trigger("reset");
+        $('.add-event-section').hide(500);
+      };
+    });
+    // Send an AJAX request to edit the event
+    $.ajax({
+      url: '/api/events/',
+      method: 'POST',
+      success: function (response) {
+        // submit new
+        $('#event-form').submit(function (e) {
+          console.log('Button clicked, performing ajax call...');
+          e.preventDefault();
+
+          const form = $(this);
+          const data = $(this).serialize();
+          // console.log('data: ', data);
+
+          $.post('/api/events/', data, function () {
+            console.log('Sending form data to server');
+            // clear form
+            form.trigger('reset');
+            form.hide(500);
+          });
+        });
+      },
+      error: function (xhr, status, error) {
+        // Handle the error response
+        console.error('Error deleting event:', error);
+      }
+    });
+  });
+
+
   // Handle delete event click
   $(document).on('click', '.delete-event', function (e) {
     e.preventDefault();
