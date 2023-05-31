@@ -54,7 +54,7 @@ $(document).ready(() => {
   map.addLayer(markersGroup);
 
   const renderMarkers = function (events) {
-    
+
 
     // create LatLongBounds object so we can zoom the map to fit the set of location events
     const bounds = L.latLngBounds();
@@ -65,7 +65,7 @@ $(document).ready(() => {
 
       //add marker to markers object with event id as a key, need to handle deliting them
       markers[event.id] = marker
-    
+
       // extend latLndBounds with coordinates
       bounds.extend([event.latitude, event.longitude]);
     }
@@ -145,6 +145,7 @@ $(document).ready(() => {
       });
       // to toggle add event form on click of add button in popup
       $('.marker-submit-button:visible').click(function () {
+        $(".add-event").html("Add Event");
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
