@@ -115,39 +115,21 @@ $(document).ready(() => {
       map.removeLayer(marker);
     }
 
-
-    if (markersCount < markersMax) {
-      marker = L.marker(e.latlng).addTo(markersGroup)
-        .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Add</button>
-        <button type='delete' class='marker-delete-button'>No</button>`);
-      marker.on('popupopen', onPopupOpen)
-        // marker.on('popupclose', onPopupClose)
-        .openPopup();
-
-      marker._popup._closeButton.onclick = function () {
-        if ($('.add-event-section').is(":visible")) {
-          $('.add-event-section').slideToggle();
-        };
-        map.removeLayer(marker);
-        return;
-      };
-    };
-
-    // Function to handle add event/delete marker on marker popup open
     function onPopupOpen() {
 
       let tempMarker = this;
 
       // To remove marker on click of delete button in the popup of marker
-      $('.marker-delete-button:visible').click(function () {
+      $('.marker-delete-button:visible').click(function() {
         map.removeLayer(tempMarker);
         if ($('.add-event-section').is(":visible")) {
           $('.add-event-section').slideToggle();
         };
       });
-
+  
       // to toggle add event form on click of add button in popup
-      $('.marker-submit-button:visible').click(function () {
+      $('.marker-submit-button:visible').click(function() {
+        console.log("line 131")
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
@@ -160,6 +142,53 @@ $(document).ready(() => {
         }
       });
     };
+
+    if (markersCount < markersMax) {
+      marker = L.marker(e.latlng).addTo(markersGroup)
+        .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Add</button>
+        <button type='delete' class='marker-delete-button'>No</button>`);
+      marker.on('popupopen', onPopupOpen)
+        // marker.on('popupclose', onPopupClose)
+        .openPopup();
+
+      marker._popup._closeButton.onclick = function () {
+  
+        if ($('.add-event-section').is(":visible")) {
+   
+          $('.add-event-section').slideToggle();
+        };
+        map.removeLayer(marker);
+        return;
+      };
+    };
+
+    // Function to handle add event/delete marker on marker popup open
+    // function onPopupOpen() {
+
+    //   let tempMarker = this;
+
+    //   // To remove marker on click of delete button in the popup of marker
+    //   $('.marker-delete-button:visible').click(function () {
+    //     map.removeLayer(tempMarker);
+    //     if ($('.add-event-section').is(":visible")) {
+    //       $('.add-event-section').slideToggle();
+    //     };
+    //   });
+
+    //   // to toggle add event form on click of add button in popup
+    //   $('.marker-submit-button:visible').click(function () {
+    //     $('.add-event-section').slideToggle();
+    //     map.closePopup();
+    //     $('#name').focus();
+    //     $('#latitude').val(lat);
+    //     $('#longitude').val(lng);
+
+    //     //remove temp marker
+    //     if (!$('.add-event-section').is(":visible")) {
+    //       map.removeLayer(tempMarker);
+    //     }
+    //   });
+    // };
     // to remove marker and close form when 'cancel' button is clicked
     $('.cancel-event').click(function () {
       if ($('.add-event-section').is(":visible")) {
@@ -187,7 +216,7 @@ $(document).ready(() => {
       form.trigger('reset');
       form.hide(500);
       console.log(response);
-
+      $('.add-event-section').slideToggle(); 
       //load all events plus newly added event
       loadEvents();
     });
@@ -214,7 +243,7 @@ $(document).ready(() => {
   let userId = parseInt(getCookie("user_id"));
   // console.log("user_id", userId)
 
-  // Fetch user's created events
+  // Fetch user's CREATED EVENTS LIST DROPDOWN
   $.ajax({
     url: '/api/events',
     method: 'GET',
@@ -260,7 +289,7 @@ $(document).ready(() => {
     }
   });
 
-  // Handle edit event click
+  // Handle EDIT event click
   $(document).on('click', '.edit-event', function (e) {
     $('.edit-event-section')
       .append(`
@@ -317,7 +346,7 @@ $(document).ready(() => {
     $('#edit-event-form').submit(function (e) {
       console.log('Button clicked, performing ajax call...');
       e.preventDefault();
-
+console.log("when is this called?")
       const form = $(this);
       const data = $(this).serialize();
       // console.log('data: ', data);
@@ -338,7 +367,7 @@ $(document).ready(() => {
     //   });
   });
 
-  // Handle delete event click
+  // Handle DETELE event click
   $(document).on('click', '.delete-event', function (e) {
     e.preventDefault();
     let eventItem = $(this).closest('.dropdown-item');
