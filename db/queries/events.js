@@ -54,7 +54,7 @@ const deleteEvent = (eventId) => {
       return 'Event deleted successfully';
     })
     .catch((error) => {
-      throw error;
+      throw error
     });
 };
 

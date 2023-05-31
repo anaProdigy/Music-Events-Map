@@ -65,6 +65,81 @@ $(document).ready(function () {
     }
   });
 
+  //convert Timestamp to YYYY-MM-DD format
+  function formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  // Handle edit event click
+  $(document).on('click', '.edit-event', function (e) {
+    // open event form
+    $('.add-event-section').slideToggle();
+    e.preventDefault();
+    let eventItem = $(this).closest('.dropdown-item');
+    let event = eventItem.data('event');
+    let startDate = formatDate(event.start_date);
+    let endDate = formatDate(event.end_date);
+    console.log(event);
+    // set fields from event object
+    $('#id').val(event.id);
+    $('#creator_id').val(event.creator_id);
+    $('#name').val(event.name);
+    $('#description').val(event.description);
+    $('#start_date').val(startDate);
+    $('#end_date').val(endDate);
+    $('#venue').val(event.venue);
+    $('#city').val(event.city);
+    $('#latitude').val(event.latitude);
+    $('#longitude').val(event.longitude);
+    $('#event_link_url').val(event.event_link_url);
+    $('#event_thumbnail_url').val(event.event_thumbnail_url);
+
+    // to remove marker and close form when 'cancel' button is clicked
+    $('.cancel-event').click(function () {
+      if ($('.add-event-section').is(":visible")) {
+        $('#event-form').trigger("reset");
+        $('.add-event-section').hide(500);
+      };
+    });
+    // Send an AJAX request to edit the event
+    $.ajax({
+      url: '/api/events/' + event.id,
+      method: 'PUT',
+      success: function (response) {
+        // submit new
+        $('#event-form').submit(function (e) {
+          console.log('Button clicked, performing ajax call...');
+          e.preventDefault();
+
+          const form = $(this);
+          const data = $(this).serialize();
+          // console.log('data: ', data);
+
+          $.post('/api/events/', data, function () {
+            console.log('Sending form data to server');
+            // clear form
+            form.trigger('reset');
+            form.hide(500);
+          });
+        });
+      },
+      error: function (xhr, status, error) {
+        // Handle the error response
+        console.error('Error deleting event:', error);
+      }
+    });
+  });
+
 
   // Handle edit event click
   $(document).on('click', '.edit-event', function (e) {
