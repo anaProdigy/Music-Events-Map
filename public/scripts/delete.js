@@ -1,5 +1,5 @@
 
-$(document).ready(function () {
+// $(document).ready(function () {
   // //return user id number from cookies to make userId dynamic
   // function getCookie(cname) {
   //   let name = cname + "=";
@@ -236,4 +236,4 @@ $(document).ready(function () {
   //     });
   //   }
   // });
-});
+// });

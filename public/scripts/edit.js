@@ -1,4 +1,4 @@
-$(document).ready(function () {
+// $(document).ready(function () {
 
   // // Handle edit event click
   // $('.edit-event').on('click', '#edit-but', function () {
@@ -48,6 +48,6 @@ $(document).ready(function () {
   //       console.error('Error deleting event:', error);
   //     }
   //   });
-  // });
-});
+//   });
+// });
 
