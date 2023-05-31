@@ -353,35 +353,36 @@ $(document).ready(() => {
     //   console.error('Error deleting event:', error);
     // }
 
-    // Handle delete event click
-    $(document).on('click', '.delete-event', function (e) {
-      e.preventDefault();
-      let eventItem = $(this).closest('.dropdown-item');
-      let event = eventItem.data('event');
-      // Perform delete event action with the event data
-      console.log('Delete event:', event);
+   
+  });
+  // Handle delete event click
+  $(document).on('click', '.delete-event', function(e) {
+    e.preventDefault();
+    let eventItem = $(this).closest('.dropdown-item');
+    let event = eventItem.data('event');
+    // Perform delete event action with the event data
+    console.log('Delete event:', event);
 
-      // Prompt the user for confirmation before deleting the event
-      if (confirm('Are you sure you want to delete this event?')) {
-        e.stopPropagation();
-        // Send an AJAX request to delete the event
-        $.ajax({
-          url: '/api/events/' + event.id,
-          method: 'DELETE',
-          success: function (response) {
-            // Handle the success response
-            //remove event from db and list
-            eventItem.remove();
+    // Prompt the user for confirmation before deleting the event
+    if (confirm('Are you sure you want to delete this event?')) {
+      e.stopPropagation();
+      // Send an AJAX request to delete the event
+      $.ajax({
+        url: '/api/events/' + event.id,
+        method: 'DELETE',
+        success: function(response) {
+          // Handle the success response
+          //remove event from db and list
+          eventItem.remove();
 
-            //REMOVE MARKER
-            markers[event.id].remove();
-          },
-          error: function (xhr, status, error) {
-            // Handle the error response
-            console.error('Error deleting event:', error);
-          }
-        });
-      }
-    })
+          //REMOVE MARKER
+          markers[event.id].remove();
+        },
+        error: function(xhr, status, error) {
+          // Handle the error response
+          console.error('Error deleting event:', error);
+        }
+      });
+    }
   });
 });

@@ -2,7 +2,7 @@
 
 
 
-$(document).ready(function () {
+// $(document).ready(function () {
 
   // $('#event-form').submit(function (e) {
   //   console.log('Button clicked, performing ajax call...');
@@ -36,4 +36,4 @@ $(document).ready(function () {
   //   //   },
   //   // });
   // });
-});
+// });
