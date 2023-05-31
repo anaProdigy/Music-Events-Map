@@ -202,6 +202,55 @@ $(document).ready(() => {
   });
 
   //ADD EVENTS
+
+  // Fetch user's CREATED EVENTS LIST DROPDOWN
+  const addCreatedEventToList = () => {
+    $.ajax({
+      url: '/api/events',
+      method: 'GET',
+      success: function(response) {
+        // console.log('All events:', response.events);
+        // Handle the success response and filter the events by the user ID
+        let events = response.events.filter(function(event) {
+          return event.creator_id === userId;
+        });
+        // console.log('Filtered events:', events);
+        //reference to html
+        let dropdownMenu = $('#created-events');
+
+        // Check if any events exist
+        if (events.length > 0) {
+          // Clear the dropdown menu
+          dropdownMenu.empty();
+
+          // Iterate over each event and create dropdown items
+          events.forEach(function(event) {
+            let eventItem = $('<a class="dropdown-item" href="#">')
+              .text(event.name)
+              .append(`
+            <div class="float-right">
+              <button class="btn btn-sm btn-info edit-event">Edit</button>
+              <button class="btn btn-sm btn-danger delete-event">Delete</button>
+            </div>
+            `);
+
+            // Add event data as data attributes to the event item
+            eventItem.data('event', event);
+
+            dropdownMenu.append(eventItem);
+          });
+        } else {
+          // If no events exist, display a message or placeholder item
+          dropdownMenu.html('<span class="dropdown-item">No events found</span>');
+        }
+      },
+      error: function(xhr, status, error) {
+        // Handle the error response
+        console.error('Error fetching events:', error);
+      }
+    });
+  }
+
   $('#event-form').submit(function (e) {
     console.log('Button clicked, performing ajax call...');
     e.preventDefault();
@@ -209,18 +258,21 @@ $(document).ready(() => {
     const form = $(this);
     const data = $(this).serialize();
     // console.log('data: ', data);
-
     $.post('/api/events/', data, function (response) {
       console.log('Sending form data to server');
       // clear form
       form.trigger('reset');
-      form.hide(500);
-      console.log(response);
+      // console.log(response);
       $('.add-event-section').slideToggle(); 
       //load all events plus newly added event
       loadEvents();
+      //ajax
+      addCreatedEventToList();
     });
   });
+ 
+  //adds all created events to the dropdowm list CREATED
+  addCreatedEventToList();
 
   //return user id number from cookies to make userId dynamic
   function getCookie(cname) {
@@ -243,51 +295,7 @@ $(document).ready(() => {
   let userId = parseInt(getCookie("user_id"));
   // console.log("user_id", userId)
 
-  // Fetch user's CREATED EVENTS LIST DROPDOWN
-  $.ajax({
-    url: '/api/events',
-    method: 'GET',
-    success: function (response) {
-      // console.log('All events:', response.events);
-      // Handle the success response and filter the events by the user ID
-      let events = response.events.filter(function (event) {
-        return event.creator_id === userId;
-      });
-      // console.log('Filtered events:', events);
-      //reference to html
-      let dropdownMenu = $('#created-events');
-
-      // Check if any events exist
-      if (events.length > 0) {
-        // Clear the dropdown menu
-        dropdownMenu.empty();
-
-        // Iterate over each event and create dropdown items
-        events.forEach(function (event) {
-          let eventItem = $('<a class="dropdown-item" href="#">')
-            .text(event.name)
-            .append(`
-            <div class="float-right">
-              <button class="btn btn-sm btn-info edit-event">Edit</button>
-              <button class="btn btn-sm btn-danger delete-event">Delete</button>
-            </div>
-            `);
-
-          // Add event data as data attributes to the event item
-          eventItem.data('event', event);
-
-          dropdownMenu.append(eventItem);
-        });
-      } else {
-        // If no events exist, display a message or placeholder item
-        dropdownMenu.html('<span class="dropdown-item">No events found</span>');
-      }
-    },
-    error: function (xhr, status, error) {
-      // Handle the error response
-      console.error('Error fetching events:', error);
-    }
-  });
+ 
 
   // Handle EDIT event click
   $(document).on('click', '.edit-event', function (e) {
