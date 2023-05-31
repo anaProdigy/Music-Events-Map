@@ -53,7 +53,7 @@ $(document).ready(() => {
   let markersGroup = L.layerGroup();
   map.addLayer(markersGroup);
 
-  const renderMarkers = function (events) {
+  const renderMarkers = function(events) {
 
 
     // create LatLongBounds object so we can zoom the map to fit the set of location events
@@ -64,17 +64,17 @@ $(document).ready(() => {
       marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
 
       //add marker to markers object with event id as a key, need to handle deliting them
-      markers[event.id] = marker
+      markers[event.id] = marker;
 
       // extend latLndBounds with coordinates
       bounds.extend([event.latitude, event.longitude]);
     }
     // fit map to bounds
     map.fitBounds(bounds);
-    console.log("markersLength", Object.keys(markers).length)
+    console.log("markersLength", Object.keys(markers).length);
   };
 
-  const loadEvents = async function () {
+  const loadEvents = async function() {
     const response = await fetch('/api/events');
     const data = await response.json();
     //console.log("data", data)
@@ -103,16 +103,22 @@ $(document).ready(() => {
       loadEvents();
     });
   });
+  //move marker var outside of event listener
+  let marker;
+  map.on('click', function(e) {
 
-
-  map.on('click', function (e) {
-    let marker;
     // get the count of currently displayed markers
     let markersCount = markersGroup.getLayers().length;
     let coord = e.latlng;
     let lat = coord.lat;
     let lng = coord.lng;
     console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+
+    //remove previous temp markers if there were any
+    if (marker) {
+      map.removeLayer(marker);
+    }
+
 
     if (markersCount < markersMax) {
       marker = L.marker(e.latlng).addTo(markersGroup)
@@ -122,13 +128,13 @@ $(document).ready(() => {
         // marker.on('popupclose', onPopupClose)
         .openPopup();
 
-      marker._popup._closeButton.onclick = function () {
+      marker._popup._closeButton.onclick = function() {
         if ($('.add-event-section').is(":visible")) {
           $('.add-event-section').slideToggle();
         };
         map.removeLayer(marker);
         return;
-      }
+      };
     };
 
     // Function to handle add event/delete marker on marker popup open
@@ -137,23 +143,28 @@ $(document).ready(() => {
       let tempMarker = this;
 
       // To remove marker on click of delete button in the popup of marker
-      $('.marker-delete-button:visible').click(function () {
+      $('.marker-delete-button:visible').click(function() {
         map.removeLayer(tempMarker);
         if ($('.add-event-section').is(":visible")) {
           $('.add-event-section').slideToggle();
         };
       });
       // to toggle add event form on click of add button in popup
-      $('.marker-submit-button:visible').click(function () {
+      $('.marker-submit-button:visible').click(function() {
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
         $('#latitude').val(lat);
         $('#longitude').val(lng);
+
+        //remove temp marker
+        if (!$('.add-event-section').is(":visible")) {
+          map.removeLayer(tempMarker);
+        }
       });
     };
     // to remove marker and close form when 'cancel' button is clicked
-    $('.cancel-event').click(function () {
+    $('.cancel-event').click(function() {
       if ($('.add-event-section').is(":visible")) {
         $('#event-form').trigger("reset");
         $('.add-event-section').hide(500);
