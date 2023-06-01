@@ -9,6 +9,15 @@ const getEvents = () => {
     });
 };
 
+const getCreatedEvents = (userId) => {
+  const query = 'SELECT * FROM music_events WHERE creator_id = $1';
+
+  return db.query(query, [userId])
+    .then(data => {
+      return data.rows;
+    });
+};
+
 const addEvent = function (event) {
   console.log("EVENT ", event);
   const queryString = `
@@ -58,4 +67,4 @@ const deleteEvent = (eventId) => {
     });
 };
 
-module.exports = { getEvents, addEvent, editEvent, deleteEvent };
+module.exports = { getEvents, addEvent, editEvent, deleteEvent, getCreatedEvents };

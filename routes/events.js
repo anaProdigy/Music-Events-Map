@@ -8,6 +8,7 @@ router.use(methodOverride('_method'));
 router.get('/', (req, res) => {
   eventQueries.getEvents()
     .then(events => {
+      // console.log("server events",events)
       res.json({ events });
     })
     .catch(err => {
@@ -17,9 +18,21 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/created/:userId', (req, res) => {
+  const userId = req.params.userId;
+console.log("line23", userId)
+  eventQueries.getCreatedEvents(userId)
+    .then(createdEvents => {
+      res.json({ createdEvents });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 router.post('/', (req, res) => {
 
-  console.log("we are hiiting this route");
+  // console.log("we are hiiting this route");
   const userId = req.cookies.user_id;
   if (!userId) {
     return res.send({ error: "error" });

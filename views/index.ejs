@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="./styles/header.css" />
   <link rel="stylesheet" href="./styles/add-event-form.css" />
   <link rel="stylesheet" href="./styles/new-marker-popup.css" />
+  <link rel="stylesheet" href="./styles/edit-event-form.css"
 
     <!-- external scripts -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -70,12 +71,12 @@
       <input class="event-input" type="number" id="longitude" name="longitude" readonly>
       <input class="event-input" type="text" id="event-link" name="event-link" placeholder="event link">
       <input class="event-input" type="text" id="venue" name="event-thumbnail" placeholder="add event image or flyer">
-      <button class = "add-event" type="submit"></button>
+      <button class = "add-event" type="submit">Add Event</button>
       <button class = "cancel-event" type="button">Cancel</button>
     </form>
   </section>
 
-  <section class="edit-event-section" action="/api/events/edit" method="POST"></section>
+  <section class="edit-event-section"></section>
 
   <!-- DROPDOWM CREATED EVENTS -->
   <div class = "container">
