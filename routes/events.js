@@ -74,7 +74,6 @@ router.post('/:eventId', (req, res) => {
         editedEvent: true
       };
       res.send(response);
-      res.redirect("/");
     })
     .catch((e) => {
       console.error(e);
