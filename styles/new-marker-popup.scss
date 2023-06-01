@@ -4,28 +4,42 @@
 
   overflow: hidden;
 
+  h2 {
+    color: black;
+  }
+
   .marker-submit-button {
-    background: #0b7dda;
-    border-radius: 5px;
-    color: #fff;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, rgba(2, 0, 36, 0.9501050420168067) 0%, rgba(48, 91, 119, 1) 75%);
+    color: #fefefe;
+    padding: 0;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    font-size: larger;
   }
 
   .marker-delete-button {
-    background: red;
-    border-radius: 5px;
-    color: #fff;
+    font-size: larger;
+    padding: 0;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    background: rgb(89, 10, 15);
+    background: linear-gradient(0deg, rgba(89, 10, 15, 1) 0%, rgba(153, 46, 164, 1) 75%);
+    color: #fefefe;
   }
-}
 
-//popup content
-p#collapsible {
-  cursor: pointer;
-}
+  //popup content
+  p#collapsible {
+    cursor: pointer;
+    font-size: 2em;
+  }
 
-p#collapsible:hover {
-  font-size: larger;
-}
+  p#collapsible:hover {
+    font-size: larger;
+  }
 
-div#expand {
-  display: none;
+  div#expand {
+    display: none;
+    font-size: 1em;
+  }
 }

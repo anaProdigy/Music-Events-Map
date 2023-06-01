@@ -1,10 +1,23 @@
 .edit-event-section {
-  padding: 20px;
   display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: transparent;
+  z-index: 2;
 
   #edit-event-form {
-    display: grid; //will need to be properly reformatted later
-    margin-bottom: 20px;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
 
     .event-input[type="text"],
     .event-input[type="date"],
@@ -18,31 +31,57 @@
       margin-left: 10px;
     }
 
-    .edit-event,
-    .cancel-edit {
-      height: 47px;
-      width: 60px;
+
+    #edit-description {
+      grid-row: 2;
+      grid-column: span 3;
+    }
+
+    #edit-end-date {
+      grid-row: 4;
+      grid-column: 1;
+    }
+
+    #edit-longitude {
+      grid-row: 4;
+      grid-column: 2;
+    }
+
+    div.edit-event-btns {
+      grid-column: 3;
+      display: flex;
+      justify-content: flex-end;
       margin-left: 10px;
-      color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
 
-    .edit-event {
-      background: #2196F3;
+    button.edit-event-btn {
+      background: rgb(2, 0, 36);
+      background: linear-gradient(90deg, rgba(2, 0, 36, 0.9501050420168067) 0%, rgba(48, 91, 119, 1) 75%);
+      color: #fefefe;
+      padding: 0;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
     }
 
-    .cancel-edit {
-      background: orangered;
+    button.cancel-edit {
+      margin-left: 0.5em;
+      padding: 0;
+      padding-left: 0.5em;
+      padding-right: 0.5em;
+      background: rgb(89, 10, 15);
+      background: linear-gradient(0deg, rgba(89, 10, 15, 1) 0%, rgba(153, 46, 164, 1) 75%);
+      color: #fefefe;
     }
 
-    .edit-event:hover { //doesn't work
-      background: darkblue;
+    button.edit-event:hover {
+      background: rgb(2, 0, 36);
     }
 
-    .cancel-edit:hover { // doesn't work
-      background: red;
+    button.cancel-edit:hover {
+      background: rgb(89, 10, 15);
     }
   }
 }
