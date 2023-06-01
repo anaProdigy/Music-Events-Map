@@ -48,6 +48,8 @@ router.post('/', (req, res) => {
         event: event,
         addedEvent: true
       };
+
+      console.log('line 52', response)
       res.send(response);
       // console.log("In promise", event);
       //  res.redirect("/");
@@ -73,6 +75,7 @@ router.post('/:eventId', (req, res) => {
         event: event,
         editedEvent: true
       };
+      console.log('line 75', response)
       res.send(response);
     })
     .catch((e) => {
