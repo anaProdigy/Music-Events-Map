@@ -10,10 +10,7 @@ html {
 }
 
 div.map-container {
-  position: absolute;
-  top: 55%;
-  left: 12%;
-  transform: translate(0, -50%);
+  margin-left: 11em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,7 +26,7 @@ div.map-container {
 
 .container-dropdowns {
   padding:1em;
-  margin-left: -2em;
+  margin-left: -1em;
 }
 
 
