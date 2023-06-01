@@ -5,16 +5,20 @@ nav.navbar {
 }
 
 h3 {
-  color:seashell;
+  color: seashell;
   padding-left: 6em;
   padding-right: 10em;
 }
 
 nav .btn {
-  margin-left: 1em;
-  height: 2.5em;
-  background: rgb(85,22,94);
-  background: linear-gradient(0deg, rgba(85,22,94,1) 7%, rgba(79,134,142,1) 100%);
+  margin-left: 0.5em;
+  height: 2.25em;
+  padding: 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  background: rgb(89,10,15);
+  background: linear-gradient(0deg, rgba(89,10,15,1) 0%, rgba(153,46,164,1) 75%);
+  color: #fefefe;
 }
 
 a.nav-link {
@@ -24,6 +28,5 @@ a.nav-link {
 }
 
 a.nav-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
-

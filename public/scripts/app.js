@@ -104,7 +104,7 @@ $(document).ready(() => {
   map.addLayer(markersGroup);
 
 
-  const renderMarkers = function(events, isCreatedByCurrentUser) {
+  const renderMarkers = function (events, isCreatedByCurrentUser) {
 
 
 
@@ -114,7 +114,7 @@ $(document).ready(() => {
 
 
     // helper function that determines if a date is before current date
-    const isInThePast = function(date) {
+    const isInThePast = function (date) {
       const today = new Date().toISOString().slice(0, 10);
 
 
@@ -141,7 +141,7 @@ $(document).ready(() => {
 
 
         const popupContent = `
-        <h3>${event.name}</h3><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
+        <h2><b>${event.name}</b></h2><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
         <p>${event.description}<p id="collapsible"><strong>. . .</strong></p>
         `;
         const popupExpansion = `
@@ -155,8 +155,8 @@ $(document).ready(() => {
 
 
         // this won't work twice in a row ?
-        const onPopupOpen = function() {
-          $('#collapsible').click(function(e) {
+        const onPopupOpen = function () {
+          $('#collapsible').click(function (e) {
             if ($('#expand').is(':visible')) {
               $('#expand').hide();
             } else {
@@ -182,21 +182,21 @@ $(document).ready(() => {
     map.fitBounds(bounds);
     // console.log("markersLength", Object.keys(markers).length);
   };
-  const loadEvents = function() {
+  const loadEvents = function () {
     $.ajax({
       url: '/api/events',
       method: 'GET',
-      success: function(data) {
+      success: function (data) {
         renderMarkers(data.events, false);
       },
-      error: function(error) {
+      error: function (error) {
         console.log('Error:', error);
       }
     });
   };
 
 
-  const loadCreatedEvents = function(userId) {
+  const loadCreatedEvents = function (userId) {
     $.ajax({
       url: `/api/events/created/${userId}`,
       method: 'GET',
@@ -204,7 +204,7 @@ $(document).ready(() => {
         console.log("line 231", data.createdEvents);
         renderMarkers(data.createdEvents, true);
       },
-      error: function(error) {
+      error: function (error) {
         console.log('Error:', error);
       }
     });
@@ -216,7 +216,7 @@ $(document).ready(() => {
 
   //move marker var outside of event listener
   let marker;
-  map.on('click', function(e) {
+  map.on('click', function (e) {
     console.log("line 183", e);
     // get the count of currently displayed markers
     let markersCount = markersGroup.getLayers().length;
@@ -235,20 +235,16 @@ $(document).ready(() => {
 
 
       // To remove marker on click of delete button in the popup of marker
-      $('.marker-delete-button:visible').click(function() {
+      $('.marker-delete-button:visible').click(function () {
         map.removeLayer(tempMarker);
         if ($('.add-event-section').is(":visible")) {
           $('.add-event-section').slideToggle();
         };
       });
       // to toggle add event form on click of add button in popup
-      $('.marker-submit-button:visible').click(function() {
+      $('.marker-submit-button:visible').click(function () {
         console.log("line 206");
         $('.add-event-section').slideToggle();
-        // MERGE CONFLICT HERE, COMMENTED OUT ONE CHANGE, KEPT THE OTHER
-        // $('.marker-submit-button:visible').click(function () {
-        // $('.edit-event-section').hide(500);
-        // $('.add-event-section').show(500);
         map.closePopup();
         $('#name').focus();
         $('#latitude').val(lat);
@@ -266,13 +262,13 @@ $(document).ready(() => {
     };
     if (markersCount < markersMax) {
       marker = L.marker(e.latlng, markerOptions).addTo(map)
-        .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Add</button>
+        .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Yes</button>
        <button type='delete' class='marker-delete-button'>No</button>`);
       marker.on('popupopen', onPopupOpen)
         // marker.on('popupclose', onPopupClose)
         .openPopup();
 
-      marker._popup._closeButton.onclick = function() {
+      marker._popup._closeButton.onclick = function () {
         if ($('.add-event-section').is(":visible")) {
           $('.add-event-section').slideToggle();
         };
@@ -283,7 +279,7 @@ $(document).ready(() => {
     };
 
     // to remove marker and close form when 'cancel' button is clicked
-    $('.cancel-event').click(function() {
+    $('.cancel-event').click(function () {
       if ($('.add-event-section').is(":visible")) {
         $('#event-form').trigger("reset");
         $('.add-event-section').hide(500);
@@ -300,9 +296,9 @@ $(document).ready(() => {
     $.ajax({
       url: '/api/events',
       method: 'GET',
-      success: function(response) {
+      success: function (response) {
         // Handle the success response and filter the events by the user ID
-        let events = response.events.filter(function(event) {
+        let events = response.events.filter(function (event) {
           return event.creator_id === userId;
         });
         // console.log('Filtered events:', events);
@@ -315,13 +311,13 @@ $(document).ready(() => {
           // Clear the dropdown menu
           dropdownMenu.empty();
           // Iterate over each event and create dropdown items
-          events.forEach(function(event) {
+          events.forEach(function (event) {
             let eventItem = $('<a class="dropdown-item" href="#">')
               .text(event.name)
               .append(`
            <div class="float-right">
-             <button class="btn btn-sm btn-info edit-event">Edit</button>
-             <button class="btn btn-sm btn-danger delete-event">Delete</button>
+             <button class="edit-event">Edit</button>
+             <button class="delete-event">Delete</button>
            </div>
            `);
             // Add event data as data attributes to the event item
@@ -333,7 +329,7 @@ $(document).ready(() => {
           dropdownMenu.html('<span class="dropdown-item">No events found</span>');
         }
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         // Handle the error response
         console.error('Error fetching events:', error);
       }
@@ -341,7 +337,7 @@ $(document).ready(() => {
   };
 
 
-  $('#event-form').submit(function(e) {
+  $('#event-form').submit(function (e) {
     e.stopPropagation();
     console.log('Button clicked, performing ajax call...');
     e.preventDefault();
@@ -349,7 +345,7 @@ $(document).ready(() => {
     const form = $(this);
     const data = $(this).serialize();
     // console.log('data: ', data);
-    $.post('/api/events/', data, function(response) {
+    $.post('/api/events/', data, function (response) {
       console.log('Sending form data to server');
       // clear form
       form.trigger('reset');
@@ -379,18 +375,21 @@ $(document).ready(() => {
      <input class="event-input" type="number" id="edit-longitude" name="longitude" readonly>
      <input class="event-input" type="text" id="edit-event-link" name="event_link_url" placeholder="event link">
      <input class="event-input" type="text" id="edit-event-thumbnail" name="event_thumbnail_url" placeholder="add event image or flyer">
-     <button class ="edit-event-btn" type="submit">Edit Event</button>
-     <button class ="cancel-edit" type="button">Undo</button>
+     <div class="edit-event-btns">
+        <button class ="edit-event-btn" type="submit"><strong>Edit</strong></button>
+        <button class ="cancel-edit" type="button"><strong>Undo</strong></button>
+      </div>
    </form>
    `);
 
   $('.edit-event-section').hide();
 
   // EDIT events
-  $(document).on('click', '.edit-event', function(e) {
+  $(document).on('click', '.edit-event', function (e) {
     e.preventDefault();
     //show form
-    $('.edit-event-section').show(500);
+    $('.edit-event-section').slideToggle();
+    $('#edit-name').focus();
     //access event to prepopulate form fields
     let eventItem = $(this).closest('.dropdown-item');
     let event = eventItem.data('event');
@@ -411,14 +410,14 @@ $(document).ready(() => {
     $('#edit-event-thumbnail').val(event.event_thumbnail_url); // this isn't filling ??
 
     // to clear and close form when 'cancel' button is clicked
-    $('.cancel-edit').click(function() {
+    $('.cancel-edit').click(function () {
       if ($('.edit-event-section').is(":visible")) {
         $('#edit-event-form').trigger("reset");
         $('.edit-event-section').hide(500);
       };
     });
     //when edit event button is clicked
-    $('#edit-event-form').on('submit', function(e) {
+    $('#edit-event-form').on('submit', function (e) {
       console.log('Button clicked, performing ajax call...');
       e.preventDefault();
       console.log("when is this called?");
@@ -435,13 +434,13 @@ $(document).ready(() => {
           // clear form
           form.trigger('reset');
           // form.hide(500);
-          $('.edit-event-section').slideToggle(); 
+          $('.edit-event-section').slideToggle();
           console.log(response);
           loadEvents();
           loadCreatedEvents(userId);
           addCreatedEventToList();
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // Handle the error response
           console.error('Error editing event:', error);
         }
@@ -449,7 +448,7 @@ $(document).ready(() => {
     });
   });
   // Handle DETELE event click
-  $(document).on('click', '.delete-event', function(e) {
+  $(document).on('click', '.delete-event', function (e) {
     e.preventDefault();
     let eventItem = $(this).closest('.dropdown-item');
     let event = eventItem.data('event');
@@ -463,7 +462,7 @@ $(document).ready(() => {
       $.ajax({
         url: '/api/events/' + event.id,
         method: 'DELETE',
-        success: function(response) {
+        success: function (response) {
           // Handle the success response
           //remove event from db and list
           eventItem.remove();
@@ -471,7 +470,7 @@ $(document).ready(() => {
           //REMOVE MARKER
           markers[event.id].remove();
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // Handle the error response
           console.error('Error deleting event:', error);
         }

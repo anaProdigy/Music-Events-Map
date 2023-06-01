@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="./styles/new-marker-popup.css" />
   <link rel="stylesheet" href="./styles/edit-event-form.css" />
   <link rel="stylesheet" href="./styles/nav.css" />
+  <link rel="stylesheet" href="./styles/dropdown-list.css" />
 
   <!-- external scripts -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -65,23 +66,6 @@
     </div>
   </nav>
 
-  <!-- <nav>
-    <div class="nav">
-      <div class="nav-left">
-        <h3 class="logo">Western Canadian Music Scene</h3>
-         <img src="./styles/icons/music.png" alt="Dancing people" > -->
-  <!-- <div class="input-group rounded">
-          <input type="search" class="form-control rounded" placeholder="Search events by city" aria-label="Search">
-          <button type="button" class="btn btn-secondary">Search</button>
-        </div>
-      </div>
-      <div class="nav-right">
-        <button class="login-signup" id="login">LOGIN</button>
-        <button class="login-signup" id="signup">SIGNUP</button>
-      </div>
-    </div>
-  </nav>  -->
-
   <!-- Add new event form -->
   <section class="add-event-section" action="/api/events/" method="POST">
     <form id="event-form">
@@ -89,56 +73,46 @@
       <input class="event-input" type="text" id="venue" name="venue" placeholder="venue" required>
       <input class="event-input" type="text" id="city" placeholder="city" name="city" required>
       <textarea id="description" placeholder="event description" name="description" required></textarea>
-      <input class="event-input" type="date" id="start-date" name="start_date" placeholder="start date" required>
-      <input class="event-input" type="date" id="end-date" name="end_date" placeholder="end date" required>
+      <input class="event-input" id="start-date" name="start_date" placeholder="start date" type="text"
+        onfocus="(this.type='date')" onblur="(this.type='text')" required>
+      <input class="event-input" id="end-date" name="end_date" placeholder="end date" type="text"
+        onfocus="(this.type='date')" onblur="(this.type='text')" required>
       <input class="event-input" type="number" id="latitude" name="latitude" readonly>
       <input class="event-input" type="number" id="longitude" name="longitude" readonly>
       <input class="event-input" type="text" id="event-link" name="event_link_url" placeholder="event link">
-      <input class="event-input" type="text" id="venue" name="event_thumbnail_url" placeholder="add event image or flyer">
-      <button class="add-event" type="submit">Add Event</button>
-      <button class="cancel-event" type="button">Cancel</button>
+      <input class="event-input" type="text" id="venue" name="event_thumbnail_url"
+        placeholder="add event image or flyer">
+      <div class="add-event-btns">
+        <button class="add-event" type="submit"><strong>Add</strong></button>
+        <button class="cancel-event" type="button"><strong>Cancel</strong></button>
+      </div>
     </form>
   </section>
 
+  <!-- Edit event form -->
   <section class="edit-event-section"></section>
 
+  <!--!!!! Leaflet Map Container !!!!-->
   <div class="map-container">
+
     <!-- DROPDOWM CREATED EVENTS -->
     <div class="container">
       <div class="container-dropdowns">
         <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="created-events-dropdown"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="dropdown-toggle" type="button" id="created-events-dropdown" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             Created Events
           </button>
           <div class="dropdown-menu" aria-labelledby="created-events-dropdown" id="created-events">
-            <!-- Display created events' details here -->
-            <!-- Example event item -->
-            <!-- <a class="dropdown-item" href="#">
-
-        <div class="float-right">
-          <button class="btn btn-sm btn-info edit-event">Edit</button>
-          <button class="btn btn-sm btn-danger delete-event">Delete</button>
-        </div>
-      </a> -->
           </div>
         </div>
 
         <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="favorite-events-dropdown"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Favorite Events
+          <button class="dropdown-toggle" type="button" id="favorite-events-dropdown" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Favourites
           </button>
           <div class="dropdown-menu" aria-labelledby="favorite-events-dropdown" id="favorite-events">
-            <!-- Display favorite events' details here -->
-            <!-- Example event item -->
-            <!-- <a class="dropdown-item" href="#">
-
-        <div class="float-right">
-          <button class="btn btn-sm btn-info edit-event">Edit</button>
-          <button class="btn btn-sm btn-danger delete-event">Delete</button>
-        </div>
-      </a> -->
           </div>
         </div>
       </div>
