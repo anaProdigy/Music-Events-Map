@@ -434,7 +434,7 @@ $(document).ready(() => {
           // clear form
           form.trigger('reset');
           // form.hide(500);
-          $('.edit-event-section').slideToggle();
+          $('.edit-event-section').hide();
           console.log(response);
           loadEvents();
           loadCreatedEvents(userId);
