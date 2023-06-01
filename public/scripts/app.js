@@ -388,7 +388,6 @@ $(document).ready(() => {
       url: '/api/events',
       method: 'GET',
       success: function(response) {
-        // console.log('All events:', response.events);
         // Handle the success response and filter the events by the user ID
         let events = response.events.filter(function(event) {
           return event.creator_id === userId;
