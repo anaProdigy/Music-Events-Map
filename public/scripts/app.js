@@ -54,7 +54,7 @@ $(document).ready(() => {
 
   // implement layers control
   let map = L.map('map', {
-    center: [52.268112, -113.811241],
+    center: [53.52986013674078, -109.95611652731895],
     zoom: 5,
     layers: [osm]
   });
@@ -556,7 +556,6 @@ $(document).ready(() => {
     //   // Handle the error response
     //   console.error('Error deleting event:', error);
     // }
-
 
   });
   // Handle DETELE event click

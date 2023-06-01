@@ -8,18 +8,33 @@ html {
 *:after {
   box-sizing: inherit;
 }
+
+div.map-container {
+  margin-left: 11em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  background-color: white;
+  box-shadow: 5px 5px #2e323c, 10px 10px #45415E, 15px 15px #91b3bc;
+  border-radius: 5px;
+  width: 75%;
+}
 .container {
   display: flex;
 }
 
 .container-dropdowns {
-  padding-right:30px;
+  padding:1em;
+  margin-left: -1em;
 }
 
-.dropdown {
-  padding-bottom:20px;
-}
-#map { 
-  height: 600px;
+
+#map {
+  margin: 1em;
+  border: 1px solid #2b4251;
+  border-radius: 5px;
+  height: 580px;
   width: 100%;
 }
+
