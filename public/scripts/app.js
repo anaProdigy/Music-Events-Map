@@ -47,6 +47,7 @@ $(document).ready(() => {
 
   // implement layers control
   let map = L.map('map', {
+    //reset the lat/lng to be further north to accomodate popupexpansion
     center: [52.268112, -113.811241],
     zoom: 5,
     layers: [osm]
@@ -91,14 +92,14 @@ $(document).ready(() => {
   let markersGroup = L.layerGroup();
   map.addLayer(markersGroup);
 
-  const renderMarkers = function(events, isCreatedByCurrentUser) {
-   
-  
+  const renderMarkers = function (events, isCreatedByCurrentUser) {
+
+
     // create LatLongBounds object so we can zoom the map to fit the set of location events
     const bounds = L.latLngBounds();
 
     // helper function that determines if a date is before current date
-    const isInThePast = function(date) {
+    const isInThePast = function (date) {
       const today = new Date().toISOString().slice(0, 10);
 
       if (date < today && date !== today) {
@@ -108,25 +109,47 @@ $(document).ready(() => {
     };
 
     for (const event of events) {
+      const markerOptions = {
+        icon: isCreatedByCurrentUser ? createdIcon : allEventsIcon,
+      };
       // if event.end_date is before today's date, don't display the event
       if (!isInThePast(event.end_date)) {
+        marker = L.marker([event.latitude, event.longitude], markerOptions).addTo(markersGroup);
+        const popupContent = `
+        <h3>${event.name}</h3><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
+        <p>${event.description}<p id="collapsible"><strong>. . .</strong></p>
+        `;
+        const popupExpansion = `
+        <div id="expand">
+          <p><b>Venue:</b> ${event.venue}<br><b>City:</b> ${event.city}<br>
+          <b>Until:</b> ${dayjs(event.end_date).format('MMMM D, YYYY')}<br>
+          <b>Link:</b> <a target="_blank" href=${event.event_link_url}>${event.event_link_url}</a><br>
+          <b>More information:</b><a target="_blank" href=${event.event_thumbnail_url}>${event.event_thumbnail_url}</a></p>
+        </div>
+        `;
+        marker.bindPopup(popupContent + popupExpansion);
+        marker.on('popupopen', onPopupOpen);
+      };
 
-        const markerOptions = {
-          icon: isCreatedByCurrentUser ? createdIcon : allEventsIcon,
-        };
+      function onPopupOpen() {
+        $('#collapsible').click(function (e) {
+          if ($('#expand').is(':visible')) {
+            $('#expand').hide();
+          } else {
+            $('#expand').show();
+          }
+        });
+      }
 
-        const marker = L.marker([event.latitude, event.longitude], markerOptions).addTo(map);
-        marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
-        //add marker to markers object with event id as a key, need to handle deliting them
-        markers[event.id] = marker;
-        // extend latLndBounds with coordinates
-        bounds.extend([event.latitude, event.longitude]);
-        //this activates toggling radio buttons
-        if (isCreatedByCurrentUser) {
-          createdEventsLayerGroup.addLayer(marker);
-        } else {
-          allEventsLayerGroup.addLayer(marker);
-        }
+      //add marker to markers object with event id as a key, need to handle deleting them
+      markers[event.id] = marker;
+      // extend latLndBounds with coordinates
+      bounds.extend([event.latitude, event.longitude]);
+      //this activates toggling radio buttons
+      if (isCreatedByCurrentUser) {
+        createdEventsLayerGroup.addLayer(marker);
+      } else {
+        allEventsLayerGroup.addLayer(marker);
       }
     }
 
@@ -134,28 +157,29 @@ $(document).ready(() => {
     map.fitBounds(bounds);
     // console.log("markersLength", Object.keys(markers).length);
   };
-  const loadEvents = function() {
+
+  const loadEvents = function () {
     $.ajax({
       url: '/api/events',
       method: 'GET',
-      success: function(data) {
+      success: function (data) {
         renderMarkers(data.events, false);
       },
-      error: function(error) {
+      error: function (error) {
         console.log('Error:', error);
       }
     });
   };
 
-  const loadCreatedEvents = function(userId) {
+  const loadCreatedEvents = function (userId) {
     $.ajax({
       url: `/api/events/created/${userId}`,
       method: 'GET',
-      success: function(data) {
+      success: function (data) {
         console.log("line 137", data.createdEvents);
         renderMarkers(data.createdEvents, true);
       },
-      error: function(error) {
+      error: function (error) {
         console.log('Error:', error);
       }
     });
@@ -174,14 +198,14 @@ $(document).ready(() => {
   //   renderMarkers(data.events, true); // Render events created by the current user
   //   console.log("line 120", renderMarkers(data.events, true))
   // };
-  
+
   loadEvents();
   loadCreatedEvents(userId);
 
 
   //move marker var outside of event listener
   let marker;
-  map.on('click', function(e) {
+  map.on('click', function (e) {
     console.log("line 183", e);
     // get the count of currently displayed markers
     let markersCount = markersGroup.getLayers().length;
@@ -189,34 +213,48 @@ $(document).ready(() => {
     let lat = coord.lat;
     let lng = coord.lng;
     console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+
     //remove previous temp markers if there were any
     if (marker) {
       map.removeLayer(marker);
     }
 
+
+    if (markersCount < markersMax) {
+      marker = L.marker(e.latlng).addTo(markersGroup)
+        .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Add</button>
+        <button type='delete' class='marker-delete-button'>No</button>`);
+      marker.on('popupopen', onPopupOpen)
+        .openPopup();
+
+      marker._popup._closeButton.onclick = function () {
+        if ($('.add-event-section').is(":visible")) {
+          $('.add-event-section').slideToggle();
+        };
+        map.removeLayer(marker);
+        return;
+      };
+    };
+
+    // Function to handle add event/delete marker on marker popup open
     function onPopupOpen() {
       let tempMarker = this;
 
       // To remove marker on click of delete button in the popup of marker
-      $('.marker-delete-button:visible').click(function() {
+      $('.marker-delete-button:visible').click(function () {
         map.removeLayer(tempMarker);
         if ($('.add-event-section').is(":visible")) {
           $('.add-event-section').slideToggle();
         };
       });
       // to toggle add event form on click of add button in popup
-      $('.marker-submit-button:visible').click(function() {
+      $('.marker-submit-button:visible').click(function () {
         console.log("line 206");
         $('.add-event-section').slideToggle();
-        // MERGE CONFLICT HERE, COMMENTED OUT ONE CHANGE, KEPT THE OTHER
-        // $('.marker-submit-button:visible').click(function () {
-        // $('.edit-event-section').hide(500);
-        // $('.add-event-section').show(500);
         map.closePopup();
         $('#name').focus();
         $('#latitude').val(lat);
         $('#longitude').val(lng);
-
 
         //remove temp marker
         if (!$('.add-event-section').is(":visible")) {
@@ -224,6 +262,7 @@ $(document).ready(() => {
         }
       });
     };
+
     //CUSTOM ICON
     const markerOptions = {
       icon: createdIcon
@@ -236,9 +275,9 @@ $(document).ready(() => {
         // marker.on('popupclose', onPopupClose)
         .openPopup();
 
-      
 
-      marker._popup._closeButton.onclick = function() {
+
+      marker._popup._closeButton.onclick = function () {
         if ($('.add-event-section').is(":visible")) {
 
           $('.add-event-section').slideToggle();
@@ -246,12 +285,12 @@ $(document).ready(() => {
         map.removeLayer(marker);
         return;
       };
-      
+
     };
 
 
     // to remove marker and close form when 'cancel' button is clicked
-    $('.cancel-event').click(function() {
+    $('.cancel-event').click(function () {
       if ($('.add-event-section').is(":visible")) {
         $('#event-form').trigger("reset");
         $('.add-event-section').hide(500);
@@ -271,10 +310,10 @@ $(document).ready(() => {
     $.ajax({
       url: '/api/events',
       method: 'GET',
-      success: function(response) {
+      success: function (response) {
         // console.log('All events:', response.events);
         // Handle the success response and filter the events by the user ID
-        let events = response.events.filter(function(event) {
+        let events = response.events.filter(function (event) {
           return event.creator_id === userId;
         });
         // console.log('Filtered events:', events);
@@ -287,7 +326,7 @@ $(document).ready(() => {
           dropdownMenu.empty();
 
           // Iterate over each event and create dropdown items
-          events.forEach(function(event) {
+          events.forEach(function (event) {
             let eventItem = $('<a class="dropdown-item" href="#">')
               .text(event.name)
               .append(`
@@ -306,14 +345,14 @@ $(document).ready(() => {
           dropdownMenu.html('<span class="dropdown-item">No events found</span>');
         }
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         // Handle the error response
         console.error('Error fetching events:', error);
       }
     });
   };
 
-  $('#event-form').submit(function(e) {
+  $('#event-form').submit(function (e) {
     e.stopPropagation();
     console.log('Button clicked, performing ajax call...');
     e.preventDefault();
@@ -321,7 +360,7 @@ $(document).ready(() => {
     const form = $(this);
     const data = $(this).serialize();
     // console.log('data: ', data);
-    $.post('/api/events/', data, function(response) {
+    $.post('/api/events/', data, function (response) {
       console.log('Sending form data to server');
       // clear form
       form.trigger('reset');
@@ -361,17 +400,16 @@ $(document).ready(() => {
   $('.edit-event-section').hide();
 
   // EDIT events
-  $(document).on('click', '.edit-event', function(e) {
+  $(document).on('click', '.edit-event', function (e) {
     e.preventDefault();
     //show form
     $('.edit-event-section').show(500);
     //access event to prepopulate form fields
     let eventItem = $(this).closest('.dropdown-item');
     let event = eventItem.data('event');
-    // convert stored dates to proper format
+    // convert store date to proper format
     let startDate = dayjs(event.start_date).format('YYYY-MM-DD');
     let endDate = dayjs(event.end_date).format('YYYY-MM-DD');
-    console.log(startDate);
 
     // set form fields from event object
     $('#edit-name').val(event.name);
@@ -386,14 +424,14 @@ $(document).ready(() => {
     $('#edit-event-thumbnail').val(event.event_thumbnail_url); // this isn't filling ??
 
     // to clear and close form when 'cancel' button is clicked
-    $('.cancel-edit').click(function() {
+    $('.cancel-edit').click(function () {
       if ($('.edit-event-section').is(":visible")) {
         $('#edit-event-form').trigger("reset");
         $('.edit-event-section').hide(500);
       };
     });
     //when edit event button is clicked
-    $('#edit-event-form').on('click', function(e) {
+    $('#edit-event-form').on('click', function (e) {
       console.log('Button clicked, performing ajax call...');
       e.preventDefault();
       console.log("when is this called?");
@@ -403,35 +441,22 @@ $(document).ready(() => {
       $.ajax({
         url: '/api/events/' + event.id,
         method: 'PUT',
-        success: function(response) {
+        success: function (response) {
           console.log('Sending form data to server');
           // clear form
           form.trigger('reset');
           form.hide(500);
           console.log(response);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // Handle the error response
           console.error('Error editing event:', error);
         }
       });
     });
-
-    // Send an AJAX request to edit the event
-    // $.ajax({
-    //   url: '/api/events/' + event.id,
-    //   method: 'PUT',
-    //   success: function (response) {
-    //     // submit new
-    // },
-    // error: function (xhr, status, error) {
-    //   // Handle the error response
-    //   console.error('Error deleting event:', error);
-    // }
-
   });
   // Handle DETELE event click
-  $(document).on('click', '.delete-event', function(e) {
+  $(document).on('click', '.delete-event', function (e) {
     e.preventDefault();
     let eventItem = $(this).closest('.dropdown-item');
     let event = eventItem.data('event');
@@ -445,7 +470,7 @@ $(document).ready(() => {
       $.ajax({
         url: '/api/events/' + event.id,
         method: 'DELETE',
-        success: function(response) {
+        success: function (response) {
           // Handle the success response
           //remove event from db and list
           eventItem.remove();
@@ -453,7 +478,7 @@ $(document).ready(() => {
           //REMOVE MARKER
           markers[event.id].remove();
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           // Handle the error response
           console.error('Error deleting event:', error);
         }
