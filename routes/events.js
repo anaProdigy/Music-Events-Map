@@ -77,7 +77,6 @@ router.post('/:eventId', (req, res) => {
       };
       console.log('line 75', response)
       res.send(response);
-      // res.redirect("/");
     })
     .catch((e) => {
       console.error(e);
