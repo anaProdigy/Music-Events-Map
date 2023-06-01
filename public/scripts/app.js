@@ -2,6 +2,23 @@
 //global object to store created marker, need for deleting them
 const markers = {};
 
+//return user id number from cookies to make userId dynamic, MOVED HERE TO BE AVAILABLE GLOBALLY
+const getCookie = (cname) => {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+};
+
 $(document).ready(() => {
   const markersMax = 2000;
   // old code to show openmaps tile map
@@ -34,16 +51,39 @@ $(document).ready(() => {
     zoom: 5,
     layers: [osm]
   });
-
+  //create layers for all events and created events
+  const allEventsLayerGroup = L.layerGroup().addTo(map);
+  const createdEventsLayerGroup = L.layerGroup().addTo(map);
   // base layers we want to switch between in layers control
   const baseMaps = {
     "OpenStreetMap": osm,
     "Google Streets": googleStreets,
     "Google Hybrid": googleHybrid
   };
+  const overlayMaps = {
+    "All Events": allEventsLayerGroup,
+    "My events": createdEventsLayerGroup
+  };
 
+  let userId = parseInt(getCookie("user_id"));
+
+  const allEventsIcon = L.icon({
+    iconUrl: 'https://static.vecteezy.com/system/resources/previews/000/546/132/original/music-notes-vector-icon.jpg',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  });
+
+  const createdIcon = L.icon({
+    iconUrl: 'https://static.vecteezy.com/system/resources/previews/000/421/283/original/music-note-icon-vector-illustration.jpg',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  });
   // display layers control and make it always visible in the top right corner, we can filter from here
-  const layerControl = L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
+  const layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+  // layerControl.addOverlay(allEventsLayerGroup, 'All Events');
+  // layerControl.addOverlay(createdEventsLayerGroup, 'Created Events');
 
   // old default display marker we used to have something on the map
   // L.marker([52.268112, -113.811241]).addTo(map);
@@ -51,8 +91,9 @@ $(document).ready(() => {
   let markersGroup = L.layerGroup();
   map.addLayer(markersGroup);
 
-  const renderMarkers = function(events) {
-
+  const renderMarkers = function(events, isCreatedByCurrentUser) {
+   
+  
     // create LatLongBounds object so we can zoom the map to fit the set of location events
     const bounds = L.latLngBounds();
 
@@ -69,32 +110,79 @@ $(document).ready(() => {
     for (const event of events) {
       // if event.end_date is before today's date, don't display the event
       if (!isInThePast(event.end_date)) {
-        const marker = L.marker([event.latitude, event.longitude]).addTo(markersGroup);
+
+        const markerOptions = {
+          icon: isCreatedByCurrentUser ? createdIcon : allEventsIcon,
+        };
+
+        const marker = L.marker([event.latitude, event.longitude], markerOptions).addTo(map);
         marker.bindPopup(`<h3>${event.name}</h3><p>${event.description}</p>`);
         //add marker to markers object with event id as a key, need to handle deliting them
         markers[event.id] = marker;
         // extend latLndBounds with coordinates
         bounds.extend([event.latitude, event.longitude]);
+        //this activates toggling radio buttons
+        if (isCreatedByCurrentUser) {
+          createdEventsLayerGroup.addLayer(marker);
+        } else {
+          allEventsLayerGroup.addLayer(marker);
+        }
       }
     }
 
     // fit map to bounds
     map.fitBounds(bounds);
-    console.log("markersLength", Object.keys(markers).length);
+    // console.log("markersLength", Object.keys(markers).length);
+  };
+  const loadEvents = function() {
+    $.ajax({
+      url: '/api/events',
+      method: 'GET',
+      success: function(data) {
+        renderMarkers(data.events, false);
+      },
+      error: function(error) {
+        console.log('Error:', error);
+      }
+    });
   };
 
-  const loadEvents = async function() {
-    const response = await fetch('/api/events');
-    const data = await response.json();
-    //console.log("data", data)
-    renderMarkers(data.events);
+  const loadCreatedEvents = function(userId) {
+    $.ajax({
+      url: `/api/events/created/${userId}`,
+      method: 'GET',
+      success: function(data) {
+        console.log("line 137", data.createdEvents);
+        renderMarkers(data.createdEvents, true);
+      },
+      error: function(error) {
+        console.log('Error:', error);
+      }
+    });
   };
 
+  //ASYNC AWAIT VERSION
+  // const loadEvents = async function() {
+  //   const response = await fetch('/api/events');
+  //   const data = await response.json();
+  //   console.log("line 113", data.events)
+  //   renderMarkers(data.events, false);
+  // };
+  // const loadCreatedEvents = async function() {
+  //   const response = await fetch(`/api/events/created/${userId}`);
+  //   const data = await response.json();
+  //   renderMarkers(data.events, true); // Render events created by the current user
+  //   console.log("line 120", renderMarkers(data.events, true))
+  // };
+  
   loadEvents();
+  loadCreatedEvents(userId);
+
 
   //move marker var outside of event listener
   let marker;
   map.on('click', function(e) {
+    console.log("line 183", e);
     // get the count of currently displayed markers
     let markersCount = markersGroup.getLayers().length;
     let coord = e.latlng;
@@ -118,12 +206,12 @@ $(document).ready(() => {
       });
       // to toggle add event form on click of add button in popup
       $('.marker-submit-button:visible').click(function() {
-        console.log("line 131");
+        console.log("line 206");
         $('.add-event-section').slideToggle();
         // MERGE CONFLICT HERE, COMMENTED OUT ONE CHANGE, KEPT THE OTHER
         // $('.marker-submit-button:visible').click(function () {
-        //   $('.edit-event-section').hide(500);
-        //   $('.add-event-section').show(500);
+        // $('.edit-event-section').hide(500);
+        // $('.add-event-section').show(500);
         map.closePopup();
         $('#name').focus();
         $('#latitude').val(lat);
@@ -136,14 +224,19 @@ $(document).ready(() => {
         }
       });
     };
-
+    //CUSTOM ICON
+    const markerOptions = {
+      icon: createdIcon
+    };
     if (markersCount < markersMax) {
-      marker = L.marker(e.latlng).addTo(markersGroup)
+      marker = L.marker(e.latlng, markerOptions).addTo(map)
         .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Add</button>
        <button type='delete' class='marker-delete-button'>No</button>`);
       marker.on('popupopen', onPopupOpen)
         // marker.on('popupclose', onPopupClose)
         .openPopup();
+
+      
 
       marker._popup._closeButton.onclick = function() {
         if ($('.add-event-section').is(":visible")) {
@@ -153,9 +246,10 @@ $(document).ready(() => {
         map.removeLayer(marker);
         return;
       };
+      
     };
 
-   
+
     // to remove marker and close form when 'cancel' button is clicked
     $('.cancel-event').click(function() {
       if ($('.add-event-section').is(":visible")) {
@@ -235,6 +329,7 @@ $(document).ready(() => {
       $('.add-event-section').slideToggle();
       //load all events plus newly added event
       loadEvents();
+      loadCreatedEvents(userId);
       //ajax
       addCreatedEventToList();
     });
@@ -242,26 +337,6 @@ $(document).ready(() => {
   //adds all created events to the dropdowm list CREATED
   addCreatedEventToList();
 
-  //return user id number from cookies to make userId dynamic
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-
-  //convert from string to number
-  let userId = parseInt(getCookie("user_id"));
-  // console.log("user_id", userId)
 
 
   //edit event form
@@ -355,37 +430,37 @@ $(document).ready(() => {
     // }
 
   });
-    // Handle DETELE event click
-    $(document).on('click', '.delete-event', function(e) {
-      e.preventDefault();
-      let eventItem = $(this).closest('.dropdown-item');
-      let event = eventItem.data('event');
-      // Perform delete event action with the event data
-      console.log('Delete event:', event);
+  // Handle DETELE event click
+  $(document).on('click', '.delete-event', function(e) {
+    e.preventDefault();
+    let eventItem = $(this).closest('.dropdown-item');
+    let event = eventItem.data('event');
+    // Perform delete event action with the event data
+    console.log('Delete event:', event);
 
-      // Prompt the user for confirmation before deleting the event
-      if (confirm('Are you sure you want to delete this event?')) {
-        e.stopPropagation();
-        // Send an AJAX request to delete the event
-        $.ajax({
-          url: '/api/events/' + event.id,
-          method: 'DELETE',
-          success: function(response) {
-            // Handle the success response
-            //remove event from db and list
-            eventItem.remove();
+    // Prompt the user for confirmation before deleting the event
+    if (confirm('Are you sure you want to delete this event?')) {
+      e.stopPropagation();
+      // Send an AJAX request to delete the event
+      $.ajax({
+        url: '/api/events/' + event.id,
+        method: 'DELETE',
+        success: function(response) {
+          // Handle the success response
+          //remove event from db and list
+          eventItem.remove();
 
-            //REMOVE MARKER
-            markers[event.id].remove();
-          },
-          error: function(xhr, status, error) {
-            // Handle the error response
-            console.error('Error deleting event:', error);
-          }
-        });
-      }
-    });
+          //REMOVE MARKER
+          markers[event.id].remove();
+        },
+        error: function(xhr, status, error) {
+          // Handle the error response
+          console.error('Error deleting event:', error);
+        }
+      });
+    }
   });
+});
 
 
 
