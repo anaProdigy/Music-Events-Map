@@ -47,6 +47,7 @@ $(document).ready(() => {
 
   // implement layers control
   let map = L.map('map', {
+    //reset the lat/lng to be further north to accomodate popupexpansion
     center: [52.268112, -113.811241],
     zoom: 5,
     layers: [osm]
@@ -156,6 +157,7 @@ $(document).ready(() => {
     map.fitBounds(bounds);
     // console.log("markersLength", Object.keys(markers).length);
   };
+
   const loadEvents = function () {
     $.ajax({
       url: '/api/events',
@@ -211,6 +213,7 @@ $(document).ready(() => {
     let lat = coord.lat;
     let lng = coord.lng;
     console.log("You clicked the map at latitude: " + lat + " and longitude: " + lng);
+
     //remove previous temp markers if there were any
     if (marker) {
       map.removeLayer(marker);
@@ -248,15 +251,10 @@ $(document).ready(() => {
       $('.marker-submit-button:visible').click(function () {
         console.log("line 206");
         $('.add-event-section').slideToggle();
-        // MERGE CONFLICT HERE, COMMENTED OUT ONE CHANGE, KEPT THE OTHER
-        // $('.marker-submit-button:visible').click(function () {
-        // $('.edit-event-section').hide(500);
-        // $('.add-event-section').show(500);
         map.closePopup();
         $('#name').focus();
         $('#latitude').val(lat);
         $('#longitude').val(lng);
-
 
         //remove temp marker
         if (!$('.add-event-section').is(":visible")) {
@@ -264,6 +262,7 @@ $(document).ready(() => {
         }
       });
     };
+
     //CUSTOM ICON
     const markerOptions = {
       icon: createdIcon
