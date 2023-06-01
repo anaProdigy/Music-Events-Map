@@ -471,13 +471,13 @@ $(document).ready(() => {
      <input class="event-input" type="text" id="edit-venue" name="venue" placeholder="venue" required>
      <input class="event-input" type="text" id="edit-city" placeholder="city" name="city" required>
      <textarea id="edit-description" placeholder="event description" name="description" required></textarea>
-     <input class="event-input" type="date" id="edit-start-date" name="start-date" placeholder="start date" required>
-     <input class="event-input" type="date" id="edit-end-date" name="end-date" placeholder="end date" required>
+     <input class="event-input" type="date" id="edit-start-date" name="start_date" placeholder="start date" required>
+     <input class="event-input" type="date" id="edit-end-date" name="end_date" placeholder="end date" required>
      <input class="event-input" type="number" id="edit-latitude" name="latitude" readonly>
      <input class="event-input" type="number" id="edit-longitude" name="longitude" readonly>
-     <input class="event-input" type="text" id="edit-event-link" name="event-link" placeholder="event link">
-     <input class="event-input" type="text" id="edit-event-thumbnail" name="event-thumbnail" placeholder="add event image or flyer">
-     <button class ="edit-event" type="submit">Edit Event</button>
+     <input class="event-input" type="text" id="edit-event-link" name="event_link_url" placeholder="event link">
+     <input class="event-input" type="text" id="edit-event-thumbnail" name="event_thumbnail_url" placeholder="add event image or flyer">
+     <button class ="edit-event-btn" type="submit">Edit Event</button>
      <button class ="cancel-edit" type="button">Undo</button>
    </form>
    `);
@@ -520,22 +520,27 @@ $(document).ready(() => {
       };
     });
     //when edit event button is clicked
-    $('#edit-event-form').on('click', function(e) {
+    $('#edit-event-form').on('submit', function(e) {
       console.log('Button clicked, performing ajax call...');
       e.preventDefault();
       console.log("when is this called?");
       const form = $(this);
       const data = $(this).serialize();
+      console.log('form and date', data);
       //edit request
       $.ajax({
         url: '/api/events/' + event.id,
-        method: 'PUT',
+        method: 'POST',
+        data: data,
         success: function(response) {
           console.log('Sending form data to server');
           // clear form
           form.trigger('reset');
           form.hide(500);
           console.log(response);
+          loadEvents();
+          loadCreatedEvents(userId);
+          addCreatedEventToList();
         },
         error: function(xhr, status, error) {
           // Handle the error response

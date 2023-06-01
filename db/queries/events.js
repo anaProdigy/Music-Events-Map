@@ -25,8 +25,8 @@ const addEvent = function (event) {
   event_link_url, event_thumbnail_url)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
   RETURNING *;`;
-  const queryParams = [event.creator_id, event.name, event.description, event['start-date'], event['end-date'], event.venue,
-  event.city, event.latitude, event.longitude, event['event-link'], event['event-thumbnail']];
+  const queryParams = [event.creator_id, event.name, event.description, event.start_date, event.end_date, event.venue,
+  event.city, event.latitude, event.longitude, event.event_link_url, event.event_thumbnail_url];
   console.log("query", queryString);
   return db
     .query(queryString, queryParams)
@@ -38,14 +38,14 @@ const addEvent = function (event) {
     })
 };
 
-const editEvent = (event) => {
+const editEvent = (event, eventId) => {
   const queryString = `
   UPDATE music_events
-  SET creator_id = $1, name = $2, description = $3, start_date = $4, end_date = $5, venue = $6, city = $7, latitude = $8, longitude = $9,
-  event_link_url = $10, event_thumbnail_url = $11)
-  WHERE id = $12`;
-  const queryParams = [event.creator_id, event.name, event.description, event['start-date'], event['end-date'], event.venue,
-  event.city, event.latitude, event.longitude, event['event-link'], event['event-thumbnail'], event.id];
+  SET name = $1, description = $2, start_date = $3, end_date = $4, venue = $5, city = $6, latitude = $7, longitude = $8,
+  event_link_url = $9, event_thumbnail_url = $10
+  WHERE id = $11`;
+  const queryParams = [event.name, event.description, event.start_date, event.end_date, event.venue,
+  event.city, event.latitude, event.longitude, event.event_link_url, event.event_thumbnail_url, eventId];
   return db
     .query(queryString, queryParams)
     .then((result) => {

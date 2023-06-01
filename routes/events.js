@@ -59,15 +59,15 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:eventId', (req, res) => {
+router.post('/:eventId', (req, res) => {
   const userId = req.cookies.user_id;
   const eventId = req.params.eventId;
   if (!userId) {
     return res.send({ error: "error" });
   }
-  req.body.creator_id = user_id;
+  console.log(req.body);
   eventQueries
-    .editEvent(eventId)
+    .editEvent(req.body, eventId)
     .then((event) => {
       const response = {
         event: event,
