@@ -4,9 +4,9 @@
 <head>
   <title>Home Page</title>
 
-  <meta charset="UTF-8" >
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- external CSS -->
   <link rel="stylesheet" crossorigin="" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
@@ -21,9 +21,10 @@
   <link rel="stylesheet" href="./styles/header.css" />
   <link rel="stylesheet" href="./styles/add-event-form.css" />
   <link rel="stylesheet" href="./styles/new-marker-popup.css" />
-  <link rel="stylesheet" href="./styles/edit-event-form.css"
+  <link rel="stylesheet" href="./styles/edit-event-form.css" />
+  <link rel="stylesheet" href="./styles/nav.css" />
 
-    <!-- external scripts -->
+  <!-- external scripts -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js" crossorigin=""></script>
   <script src="/vendor/jquery-3.0.0.js"></script>
@@ -41,22 +42,45 @@
 </head>
 
 <body>
-   <div class="nav">
-      <div class="nav-left">
-        <h1 class="logo">Live Music Events</h1>
-        <!-- <img src="./styles/icons/music.png" alt="Dancing people" > -->
-      <form class="search-form"  action="">
-        <input class="search-input" type="text" placeholder="Search by city" name="search">
-        <button class = "search-button" type="submit"><i class="fa fa-search"></i></button>
-      </form>
+  <nav class="navbar navbar-expand-lg">
+    <h3>Western Canadian Music Scene</h3>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      </div>
-      <div class="nav-right">
-        <button class = "login-signup" id="login">LOGIN</button>
-        <button class = "login-signup" id="signup">SIGNUP</button>
-      </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control rounded" type="search" placeholder="Search events by city" aria-label="Search">
+        <button class="btn btn-secondary" type="submit">Search</button>
+      </form>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Log in</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Sign up</a>
+        </li>
+      </ul>
     </div>
   </nav>
+
+  <!-- <nav>
+    <div class="nav">
+      <div class="nav-left">
+        <h3 class="logo">Western Canadian Music Scene</h3>
+         <img src="./styles/icons/music.png" alt="Dancing people" > -->
+  <!-- <div class="input-group rounded">
+          <input type="search" class="form-control rounded" placeholder="Search events by city" aria-label="Search">
+          <button type="button" class="btn btn-secondary">Search</button>
+        </div>
+      </div>
+      <div class="nav-right">
+        <button class="login-signup" id="login">LOGIN</button>
+        <button class="login-signup" id="signup">SIGNUP</button>
+      </div>
+    </div>
+  </nav>  -->
 
   <!-- Add new event form -->
   <section class="add-event-section" action="/api/events/" method="POST">
@@ -71,52 +95,56 @@
       <input class="event-input" type="number" id="longitude" name="longitude" readonly>
       <input class="event-input" type="text" id="event-link" name="event-link" placeholder="event link">
       <input class="event-input" type="text" id="venue" name="event-thumbnail" placeholder="add event image or flyer">
-      <button class = "add-event" type="submit">Add Event</button>
-      <button class = "cancel-event" type="button">Cancel</button>
+      <button class="add-event" type="submit">Add Event</button>
+      <button class="cancel-event" type="button">Cancel</button>
     </form>
   </section>
 
   <section class="edit-event-section"></section>
 
-  <!-- DROPDOWM CREATED EVENTS -->
-  <div class = "container">
-    <div class = "container-dropdowns">
-       <div class="dropdown">
-         <button class="btn btn-primary dropdown-toggle" type="button" id="created-events-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Created Events
-         </button>
-       <div class="dropdown-menu" aria-labelledby="created-events-dropdown" id="created-events">
-      <!-- Display created events' details here -->
-      <!-- Example event item -->
-      <!-- <a class="dropdown-item" href="#">
+  <div class="map-container">
+    <!-- DROPDOWM CREATED EVENTS -->
+    <div class="container">
+      <div class="container-dropdowns">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="created-events-dropdown"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Created Events
+          </button>
+          <div class="dropdown-menu" aria-labelledby="created-events-dropdown" id="created-events">
+            <!-- Display created events' details here -->
+            <!-- Example event item -->
+            <!-- <a class="dropdown-item" href="#">
 
         <div class="float-right">
           <button class="btn btn-sm btn-info edit-event">Edit</button>
           <button class="btn btn-sm btn-danger delete-event">Delete</button>
         </div>
       </a> -->
-    </div>
-  </div>
+          </div>
+        </div>
 
-    <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" id="favorite-events-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Favorite Events
-    </button>
-    <div class="dropdown-menu" aria-labelledby="favorite-events-dropdown" id="favorite-events">
-      <!-- Display favorite events' details here -->
-      <!-- Example event item -->
-      <!-- <a class="dropdown-item" href="#">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="favorite-events-dropdown"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Favorite Events
+          </button>
+          <div class="dropdown-menu" aria-labelledby="favorite-events-dropdown" id="favorite-events">
+            <!-- Display favorite events' details here -->
+            <!-- Example event item -->
+            <!-- <a class="dropdown-item" href="#">
 
         <div class="float-right">
           <button class="btn btn-sm btn-info edit-event">Edit</button>
           <button class="btn btn-sm btn-danger delete-event">Delete</button>
         </div>
       </a> -->
+          </div>
+        </div>
+      </div>
+      <div id="map"></div>
     </div>
   </div>
-</div>
-<div id="map"></div>
-</div>
 
 
   <script>
