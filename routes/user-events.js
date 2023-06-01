@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const eventQueries = require('../db/queries/events');
+const userEventQueries = require('../db/queries/user-events');
 const methodOverride = require('method-override');
 
 router.use(methodOverride('_method'));
 
 router.get('/', (req, res) => {
-  eventQueries.getUserEvents()
+  userEventQueries.getUserEvents()
     .then(events => {
       res.json({ events });
     })
