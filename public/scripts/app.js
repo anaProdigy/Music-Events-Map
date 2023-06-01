@@ -86,10 +86,10 @@ $(document).ready(() => {
         </div>
         `;
 
+        // this won't work twice in a row ?
         const onPopupOpen = function () {
           $('#collapsible').click(function (e) {
-            e.preventDefault();
-            if($('#expand').is(':visible')) {
+            if ($('#expand').is(':visible')) {
               $('#expand').hide();
             } else {
               $('#expand').show();
@@ -157,7 +157,7 @@ $(document).ready(() => {
     };
 
     // Function to handle add event/delete marker on marker popup open
-    const onPopupOpen = function () {
+    function onPopupOpen() {
 
       let tempMarker = this;
 
@@ -309,8 +309,8 @@ $(document).ready(() => {
     let eventItem = $(this).closest('.dropdown-item');
     let event = eventItem.data('event');
     // convert store date to proper format
-    let startDate = dayjs(event.start_date).format('YYYY-MM-DD');
-    let endDate = dayjs(event.end_date).format('YYYY-MM-DD');
+    let startDate = dayjs(event.start - date).format('YYYY-MM-DD');
+    let endDate = dayjs(event.end - date).format('YYYY-MM-DD');
 
     // set form fields from event object
     $('#edit-name').val(event.name);
@@ -321,8 +321,8 @@ $(document).ready(() => {
     $('#edit-city').val(event.city);
     $('#edit-latitude').val(event.latitude);
     $('#edit-longitude').val(event.longitude);
-    $('#edit-event-link').val(event.event_link_url);
-    $('#edit-event-thumbnail').val(event.event_thumbnail_url); // this isn't filling ??
+    $('#edit-event-link').val(event.event - link - url);
+    $('#edit-event-thumbnail').val(event.event - thumbnail - url); // this isn't filling ??
 
     // to clear and close form when 'cancel' button is clicked
     $('.cancel-edit').click(function () {
