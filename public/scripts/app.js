@@ -98,6 +98,16 @@ $(document).ready(() => {
   // layerControl.addOverlay(createdEventsLayerGroup, 'Created Events');
 
 
+  //display leaflet-geosearch on map to search for events by city
+  const provider = new window.GeoSearch.OpenStreetMapProvider();
+  const search = new GeoSearch.GeoSearchControl({
+    provider: provider,
+    style: 'bar',
+    updateMap: true,
+    autoClose: true,
+  });
+  map.addControl(search);
+
   // old default display marker we used to have something on the map
   // L.marker([52.268112, -113.811241]).addTo(map);
 
