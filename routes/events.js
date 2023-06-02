@@ -19,7 +19,9 @@ router.get('/', (req, res) => {
 // get user-created events
 router.get('/created/:user_id', (req, res) => {
   const userId = req.params.user_id;
-  console.log("line23", userId)
+  if (!userId) {
+    return res.send({ error: "error" });
+  }
   eventQueries.getCreatedEvents(userId)
     .then(createdEvents => {
       res.json({ createdEvents });
