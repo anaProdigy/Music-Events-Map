@@ -195,13 +195,50 @@ $(document).ready(() => {
     });
   };
 
+  // display Name when logged in
+  const displayName = function (userId) {
+    $.ajax({
+      url: `/login/name/` + userId,
+      method: 'GET',
+      success: function(data) {
+        let name = data.userName[0]['name'];
+        // show logged-in
+        $('.logged-in').show();
+        // set nav bar to display userName
+        $('.first-name').text(`Hi, ${name}!`);
+        // hide registration buttons
+        $('.new-user').hide();
+      },
+      error: function (error) {
+        console.log('Error:', error);
+      }
+    });
+  };
+
+  displayName(userId);
+
+  // display registration when logged out
+
+  $('#log-out').trigger('click', function() {
+    $.ajax({
+      url: `/login/logout/`,
+      method: 'POST',
+      success: function() {
+        $('.new-user').show();
+        $('.new-user').hide();
+      },
+      error: function (error) {
+        console.log('Error:', error);
+      }
+    });
+  });
+
 
   const loadCreatedEvents = function (userId) {
     $.ajax({
       url: `/api/events/created/${userId}`,
       method: 'GET',
-      success: function(data) {
-        console.log("line 231", data.createdEvents);
+      success: function (data) {
         renderMarkers(data.createdEvents, true);
       },
       error: function (error) {
@@ -217,7 +254,6 @@ $(document).ready(() => {
   //move marker var outside of event listener
   let marker;
   map.on('click', function (e) {
-    console.log("line 183", e);
     // get the count of currently displayed markers
     let markersCount = markersGroup.getLayers().length;
     let coord = e.latlng;
@@ -243,7 +279,6 @@ $(document).ready(() => {
       });
       // to toggle add event form on click of add button in popup
       $('.marker-submit-button:visible').click(function () {
-        console.log("line 206");
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
@@ -289,7 +324,6 @@ $(document).ready(() => {
     });
   });
 
-
   //ADD EVENTS
   // Fetch user's CREATED EVENTS LIST DROPDOWN
   const addCreatedEventToList = () => {
@@ -301,7 +335,6 @@ $(document).ready(() => {
         let events = response.events.filter(function (event) {
           return event.creator_id === userId;
         });
-        // console.log('Filtered events:', events);
         //reference to html
         let dropdownMenu = $('#created-events');
 
@@ -344,7 +377,7 @@ $(document).ready(() => {
 
     const form = $(this);
     const data = $(this).serialize();
-    // console.log('data: ', data);
+
     $.post('/api/events/', data, function (response) {
       console.log('Sending form data to server');
       // clear form
@@ -429,7 +462,7 @@ $(document).ready(() => {
         url: '/api/events/' + event.id,
         method: 'POST',
         data: data,
-        success: function(response) {
+        success: function (response) {
           console.log('Line 535 Sending form data to server');
           // clear form
           form.trigger('reset');
@@ -453,8 +486,6 @@ $(document).ready(() => {
     let eventItem = $(this).closest('.dropdown-item');
     let event = eventItem.data('event');
     // Perform delete event action with the event data
-    console.log('Delete event:', event);
-
     // Prompt the user for confirmation before deleting the event
     if (confirm('Are you sure you want to delete this event?')) {
       e.stopPropagation();

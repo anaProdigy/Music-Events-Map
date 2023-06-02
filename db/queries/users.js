@@ -1,11 +1,14 @@
 const db = require('../connection');
 
-const getUsers = () => {
-  return db.query('SELECT * FROM users;')
+// Return name of logged-in user
+const getLoggedInUser = (userId) => {
+  return db.query(`SELECT name FROM users WHERE id = $1;`, [userId])
     .then(data => {
-
       return data.rows;
-    });
+    })
+    .catch((error) => {
+      throw error;
+    })
 };
 
-module.exports = { getUsers };
+module.exports = { getLoggedInUser };

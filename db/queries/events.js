@@ -1,23 +1,30 @@
 const db = require('../connection');
 
+// Return all events
 const getEvents = () => {
   return db.query('SELECT * FROM music_events;')
-    .then(data => {
-
-      return data.rows;
-
-    });
+    .then(result => {
+      return result.rows;
+    })
+    .catch((error) => {
+      throw error;
+    })
 };
 
+// Return user-created events
 const getCreatedEvents = (userId) => {
   const query = 'SELECT * FROM music_events WHERE creator_id = $1';
 
   return db.query(query, [userId])
-    .then(data => {
-      return data.rows;
-    });
+    .then(result => {
+      return result.rows;
+    })
+    .catch((error) => {
+      throw error;
+    })
 };
 
+// Add new event to music_events
 const addEvent = function (event) {
   console.log("EVENT ", event);
   const queryString = `
@@ -38,6 +45,7 @@ const addEvent = function (event) {
     })
 };
 
+// Update music_events via edit form
 const editEvent = (event, eventId) => {
   const queryString = `
   UPDATE music_events
@@ -56,7 +64,7 @@ const editEvent = (event, eventId) => {
     })
 }
 
-
+// Delete event from music_events
 const deleteEvent = (eventId) => {
   return db.query('DELETE FROM music_events WHERE id = $1', [eventId])
     .then(() => {

@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const eventQueries = require('../db/queries/events');
-const methodOverride = require('method-override');
 
-router.use(methodOverride('_method'));
-
+// get all events
 router.get('/', (req, res) => {
   eventQueries.getEvents()
     .then(events => {
@@ -18,9 +16,10 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/created/:userId', (req, res) => {
-  const userId = req.params.userId;
-console.log("line23", userId)
+// get user-created events
+router.get('/created/:user_id', (req, res) => {
+  const userId = req.params.user_id;
+  console.log("line23", userId)
   eventQueries.getCreatedEvents(userId)
     .then(createdEvents => {
       res.json({ createdEvents });
@@ -30,17 +29,14 @@ console.log("line23", userId)
     });
 });
 
+// add new event
 router.post('/', (req, res) => {
-
-  // console.log("we are hiiting this route");
   const userId = req.cookies.user_id;
   if (!userId) {
     return res.send({ error: "error" });
   }
-  // // console.log(req.body);
   const newEvent = req.body;
   newEvent.creator_id = userId;
-  console.log('newEvent: ', newEvent);
   eventQueries
     .addEvent(newEvent)
     .then((event) => {
@@ -48,8 +44,6 @@ router.post('/', (req, res) => {
         event: event,
         addedEvent: true
       };
-
-      console.log('line 52', response)
       res.send(response);
       // console.log("In promise", event);
       //  res.redirect("/");
@@ -61,13 +55,13 @@ router.post('/', (req, res) => {
     });
 });
 
-router.post('/:eventId', (req, res) => {
+// edit user-created event
+router.post('/:event_id', (req, res) => {
   const userId = req.cookies.user_id;
-  const eventId = req.params.eventId;
+  const eventId = req.params.event_id;
   if (!userId) {
     return res.send({ error: "error" });
   }
-  console.log(req.body);
   eventQueries
     .editEvent(req.body, eventId)
     .then((event) => {
@@ -75,7 +69,6 @@ router.post('/:eventId', (req, res) => {
         event: event,
         editedEvent: true
       };
-      console.log('line 75', response)
       res.send(response);
     })
     .catch((e) => {
@@ -84,6 +77,7 @@ router.post('/:eventId', (req, res) => {
     });
 });
 
+// delete user-created event
 router.delete('/:eventId', (req, res) => {
   const eventId = req.params.eventId;
 
