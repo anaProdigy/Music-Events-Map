@@ -54,7 +54,7 @@ $(document).ready(() => {
 
   // implement layers control
   let map = L.map('map', {
-    center: [53.52986013674078, -109.95611652731895],
+    center: [54.36263970537757, -110.03906250000001],
     zoom: 5,
     layers: [osm]
   });
@@ -112,7 +112,7 @@ $(document).ready(() => {
 
 
     // create LatLongBounds object so we can zoom the map to fit the set of location events
-    const bounds = L.latLngBounds();
+    // const bounds = L.latLngBounds();
 
 
     // helper function that determines if a date is before current date
@@ -170,7 +170,7 @@ $(document).ready(() => {
         marker.on('popupopen', onPopupOpen);
 
 
-        bounds.extend([event.latitude, event.longitude]);
+        // bounds.extend([event.latitude, event.longitude]);
         if (isCreatedByCurrentUser) {
           createdEventsLayerGroup.addLayer(marker);
         } else {
@@ -181,7 +181,7 @@ $(document).ready(() => {
 
 
     // fit map to bounds
-    map.fitBounds(bounds);
+    // map.fitBounds(bounds);
     // console.log("markersLength", Object.keys(markers).length);
   };
   const loadEvents = function () {
