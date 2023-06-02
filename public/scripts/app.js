@@ -74,18 +74,18 @@ $(document).ready(() => {
 
 
   const allEventsIcon = L.icon({
-    iconUrl: 'https://static.vecteezy.com/system/resources/previews/000/546/132/original/music-notes-vector-icon.jpg',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
+    iconUrl: '../icons/musicPurple.png',
+    iconSize: [65, 60],
+    iconAnchor: [30, 60],
+    popupAnchor: [0, -60]
   });
 
 
   const createdIcon = L.icon({
-    iconUrl: 'https://static.vecteezy.com/system/resources/previews/000/421/283/original/music-note-icon-vector-illustration.jpg',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
+    iconUrl: '../icons/musicBlue.png',
+    iconSize: [65, 60],
+    iconAnchor: [30, 60],
+    popupAnchor: [0, -60]
   });
 
   let userId = parseInt(getCookie("user_id"));
