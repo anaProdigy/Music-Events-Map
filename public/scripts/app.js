@@ -73,9 +73,6 @@ $(document).ready(() => {
   };
 
 
-  let userId = parseInt(getCookie("user_id"));
-
-
   const allEventsIcon = L.icon({
     iconUrl: 'https://static.vecteezy.com/system/resources/previews/000/546/132/original/music-notes-vector-icon.jpg',
     iconSize: [32, 32],
@@ -90,6 +87,11 @@ $(document).ready(() => {
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
   });
+
+  let userId = parseInt(getCookie("user_id"));
+  if(userId) {
+    $('.container-dropdowns').show();
+  }
   // display layers control and make it always visible in the top right corner, we can filter from here
   const layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
   // layerControl.addOverlay(allEventsLayerGroup, 'All Events');
@@ -218,8 +220,9 @@ $(document).ready(() => {
   displayName(userId);
 
   // display registration when logged out
-
-  $('#log-out').trigger('click', function() {
+  // not functioning atm
+  $('#log-out').on('click', '#click', function(e) {
+    e.preventDefault();
     $.ajax({
       url: `/login/logout/`,
       method: 'POST',
