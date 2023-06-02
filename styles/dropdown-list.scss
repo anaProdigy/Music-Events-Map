@@ -5,43 +5,50 @@
 .dropdown button.dropdown-toggle {
   background: rgb(2, 0, 36);
   background: linear-gradient(90deg, rgba(2, 0, 36, 0.9501050420168067) 0%, rgba(48, 91, 119, 1) 75%);
-  color:  seashell;
+  color: seashell;
   padding: 0;
   padding-left: 0.5em;
   padding-right: 0.5em;
   margin: 0.5em;
   height: 2.5em;
   width: 9em;
+
+  :hover {
+    background: rgb(2, 0, 36);
+  }
 }
 
-  button.edit-event {
-    background: rgb(2, 0, 36);
-    background: linear-gradient(90deg, rgba(2, 0, 36, 0.9501050420168067) 0%, rgba(48, 91, 119, 1) 75%);
-    color:  seashell;
-    padding: 0;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  button.delete-event {
-    background: rgb(89, 10, 15);
-    background: linear-gradient(0deg, rgba(89, 10, 15, 1) 0%, rgba(153, 46, 164, 1) 75%);
-    color:  seashell;
-    padding: 0;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  button.edit-event:hover {
-    background: rgb(2, 0, 36);
-  }
-
-  button.delete-event:hover {
-    background: rgb(89, 10, 15);
-  }
-
-  .dropdown-item {
-    font-weight: bold;
-  }
+.dropdown button.dropdown-toggle:hover {
+  background: rgb(2, 0, 36);
+}
 
 
+button.edit-event {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(90deg, rgba(2, 0, 36, 0.9501050420168067) 0%, rgba(48, 91, 119, 1) 75%);
+  color: seashell;
+  padding: 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+button.delete-event {
+  background: rgb(89, 10, 15);
+  background: linear-gradient(0deg, rgba(89, 10, 15, 1) 0%, rgba(153, 46, 164, 1) 75%);
+  color: seashell;
+  padding: 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+button.edit-event:hover {
+  background: rgb(2, 0, 36);
+}
+
+button.delete-event:hover {
+  background: rgb(89, 10, 15);
+}
+
+.dropdown-item {
+  font-weight: bold;
+}

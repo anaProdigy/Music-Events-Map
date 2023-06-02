@@ -5,13 +5,21 @@ nav.navbar {
   padding-bottom: 0;
 
   h2 {
+    font-weight: bold;
+    margin-left: 0em;
+    font-size: 2em;
+    transition: .6s ease-in-out;
+    -webkit-transition: .6s ease-in-out;
+    color: seashell;
+  }
+
+  h2:hover {
+    font-size: 2.5em;
     color: transparent;
     -webkit-background-clip: text;
     background-image: rgb(134, 40, 144);
     background-image: linear-gradient(0deg, rgba(134, 40, 144, 1) 10%, rgba(210, 71, 225, 1) 60%);
     background-clip: text;
-    font-weight: bold;
-    margin-left: -1em;
   }
 
   .nav-wrapper {
