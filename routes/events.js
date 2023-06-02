@@ -4,7 +4,8 @@ const eventQueries = require('../db/queries/events');
 
 // get all events
 router.get('/', (req, res) => {
-  eventQueries.getEvents()
+  const userId = req.cookies.user_id;
+  eventQueries.getEvents(userId)
     .then(events => {
       // console.log("server events",events)
       res.json({ events });
@@ -31,6 +32,19 @@ router.get('/created/:user_id', (req, res) => {
     });
 });
 
+// Get favorite events for a user
+router.get('/favorite/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  eventQueries.getFavoriteEvents(userId)
+    .then(favoriteEvents => {
+      res.json({ favoriteEvents });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 // add new event
 router.post('/', (req, res) => {
   const userId = req.cookies.user_id;
@@ -47,9 +61,6 @@ router.post('/', (req, res) => {
         addedEvent: true
       };
       res.send(response);
-      // console.log("In promise", event);
-      //  res.redirect("/");
-      // //res.send(event); //this can be for AJAX
     })
     .catch((e) => {
       console.error(e);
@@ -57,7 +68,24 @@ router.post('/', (req, res) => {
     });
 });
 
+// Add favorite event POST /api/events/favorite
+router.post('/favorite', (req, res) => {
+  const userId = req.cookies.user_id;
+  const { eventId } = req.body;
+  // Call the addFavoriteEvent function with the userId and eventId
+  eventQueries.addFavoriteEvent(userId, eventId)
+    .then((favoriteEvent) => {
+      // Return the added favorite event as the response
+      res.json({ favoriteEvent });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: 'Failed to add event to favorites' });
+    });
+});
+
+
 // edit user-created event
+//eventId IN MINE?????????????????????
 router.post('/:event_id', (req, res) => {
   const userId = req.cookies.user_id;
   const eventId = req.params.event_id;
@@ -91,6 +119,22 @@ router.delete('/:eventId', (req, res) => {
       res.status(500).json({ error: err.message });
     });
 });
+
+// DELETE FROM FAVORITE EVNETS
+router.delete('/favorites/:eventId', (req, res) => {
+  const userId = req.cookies.user_id;
+  const eventId = req.params.eventId;
+
+  eventQueries.deleteFavoriteEvents(userId, eventId)
+    .then(() => {
+      console.log("FIRE", eventId);
+      res.json({ message: 'Event deleted successfully' });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 
 module.exports = router;
 

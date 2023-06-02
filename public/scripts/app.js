@@ -151,8 +151,12 @@ $(document).ready(() => {
         //add marker to markers object with event id as a key, need to handle deliting them
         markers[event.id] = marker;
 
-
+ //event.music_event_id is for checking favorite
         const popupContent = `
+        <div class="favorite-icon ${event.music_event_id ? 'favorited' : ''}" id=${event.id}>
+        <i class="fa fa-heart"></i>
+        </div>
+
         <h3><b>${event.name}</b></h3><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
         <p>${event.description}<p id="collapsible"><strong>. . .</strong></p>
         `;
@@ -395,6 +399,125 @@ $(document).ready(() => {
   //adds all created events to the dropdowm list CREATED
   addCreatedEventToList();
 
+  //FETCH FAVOURITE EVENTS
+  const fetchFavoriteEvents = (userId) => {
+    $.ajax({
+      url: `/api/events/favorite/${userId}`,
+      method: 'GET',
+      success: function(response) {
+        let favoriteEvents = response.favoriteEvents;
+        let dropdownMenu = $('#favorite-events');
+
+        // Check if any favorite events exist
+        if (favoriteEvents.length > 0) {
+          // Clear the dropdown menu
+          dropdownMenu.empty();
+          // Iterate over each favorite event and create dropdown items
+          favoriteEvents.forEach(function(event) {
+
+            $(`[id="${event.id}"] i`).addClass('favorited');
+            let eventItem = $('<a class="dropdown-item" href="#">')
+              .text(event.name)
+              .append(`
+            <div class="float-right">
+              <button class="remove-favorite-event" id=${event.id}>Remove</button>
+            </div>
+          `);
+            // Add event data as data attributes to the event item
+            eventItem.data('event', event);
+            dropdownMenu.append(eventItem);
+          });
+        } else {
+          // If no favorite events exist, display a message or placeholder item
+          dropdownMenu.html('<span class="dropdown-item">No favorite events found</span>');
+        }
+      },
+      error: function(xhr, status, error) {
+        // Handle the error response
+        console.error('Error fetching favorite events:', error);
+      }
+    });
+  };
+
+  //ADD FAVORITE EVENTS
+  const addToFavoritesList = (userId, eventId) => {
+    return $.ajax({
+      url: '/api/events/favorite',
+      method: 'POST',
+      data: { userId, eventId },
+      success: function(response) {
+
+        return response;
+      },
+      error: function(xhr, status, error) {
+        throw error;
+      }
+    });
+  };
+
+  //REMEVOVE FAVORITE EVENTS
+  const removeFavoriteEvent = (userId, eventId) => {
+    return $.ajax({
+      url: `/api/events/favorites/${eventId}`,
+      method: 'DELETE',
+      success: function(response) {
+
+
+
+        // Reload the favorite events dropdown or update the UI accordingly
+        fetchFavoriteEvents(userId);
+      },
+      error: function(xhr, status, error) {
+        // Handle the error response
+        console.error('Error removing event from favorites:', error);
+      }
+    });
+  };
+
+  //HANDLE CLICK ON REMOVE FAV BUTTON
+  $(document).on('click', '.remove-favorite-event', function() {
+    // Get the event ID from the data attribute
+    const eventId = $(this).attr("id");
+
+
+    // Call a function to remove the event from favorites
+    removeFavoriteEvent(userId, eventId)
+      .then(() => {
+        fetchFavoriteEvents(userId);
+      });
+
+  });
+
+  $(document).on('click', '.favorite-icon', function() {
+    const eventId = $(this).attr("id");
+
+    const heartIcon = $(this);
+
+    if (heartIcon.hasClass('favorited')) {
+      // Event is already favorited, remove it from favorites
+      removeFavoriteEvent(eventId)
+        .then(() => {
+          console.log('Event removed from favorites:', eventId);
+          heartIcon.removeClass('favorited');
+        })
+        .catch((error) => {
+          console.error('Error removing event from favorites:', error);
+        });
+    } else {
+      // Event is not favorited, add it to favorites
+      addToFavoritesList(userId, eventId)
+        .then(() => {
+          console.log('Event added to favorites:', eventId);
+          heartIcon.addClass('favorited');
+          fetchFavoriteEvents(userId);
+        })
+        .catch((error) => {
+          console.error('Error adding event to favorites:', error);
+        });
+    }
+  });
+  fetchFavoriteEvents(userId);
+
   //edit event form
   $('.edit-event-section')
     .append(`
@@ -464,7 +587,7 @@ $(document).ready(() => {
         method: 'POST',
         data: data,
         success: function (response) {
-          console.log('Line 535 Sending form data to server');
+          console.log('Sending form data to server');
           // clear form
           form.trigger('reset');
           // form.hide(500);
