@@ -14,12 +14,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
   <link rel="stylesheet" href="/vendor/border-box.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.1.0/dist/geosearch.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.1.0/dist/geosearch.css" />
 
   <!-- internal CSS -->
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/layout.css" />
-  <link rel="stylesheet" href="./styles/header.css" />
   <link rel="stylesheet" href="./styles/add-event-form.css" />
   <link rel="stylesheet" href="./styles/new-marker-popup.css" />
   <link rel="stylesheet" href="./styles/edit-event-form.css" />
@@ -46,18 +45,19 @@
 
 <body>
   <nav class="navbar navbar-expand-lg">
-    <h3>Western Canadian Music Scene</h3>
+    <h2>Western Canadian Music Scene</h2>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control rounded" type="search" placeholder="Search events by city" aria-label="Search">
-        <button class="btn btn-secondary" type="submit">Search</button>
-      </form>
-
+    <div class="nav-wrapper">
+      <div class="band-icon">
+        <ul class="navbar-nav mr-auto">
+          <li class="band-icon nav-item">
+            <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/992EA4/concert.png" alt="concert" />
+          </li>
+        </ul>
+      </div>
       <div class="new-user">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
@@ -73,18 +73,17 @@
           <li class="nav-item">
             <a class="nav-link first-name" href="#"></a>
           </li>
-          <li id="log-out"class="nav-item">
+          <li id="log-out" class="nav-item">
             <a id="click" class="nav-link" href="#">Sign out</a>
           </li>
         </ul>
       </div>
-
     </div>
   </nav>
 
   <!-- Add new event form -->
   <section class="add-event-section" action="/api/events/" method="POST">
-    <form id="event-form">
+    <form id="event-form" autocomplete="off">
       <input class="event-input" type="text" id="name" placeholder="event name" name="name" required>
       <input class="event-input" type="text" id="venue" name="venue" placeholder="venue" required>
       <input class="event-input" type="text" id="city" placeholder="city" name="city" required>

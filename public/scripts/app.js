@@ -92,10 +92,10 @@ $(document).ready(() => {
   if(userId) {
     $('.container-dropdowns').show();
   }
+
+
   // display layers control and make it always visible in the top right corner, we can filter from here
   const layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
-  // layerControl.addOverlay(allEventsLayerGroup, 'All Events');
-  // layerControl.addOverlay(createdEventsLayerGroup, 'Created Events');
 
 
   //display leaflet-geosearch on map to search for events by city
@@ -153,7 +153,7 @@ $(document).ready(() => {
 
 
         const popupContent = `
-        <h2><b>${event.name}</b></h2><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
+        <h3><b>${event.name}</b></h3><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
         <p>${event.description}<p id="collapsible"><strong>. . .</strong></p>
         `;
         const popupExpansion = `
@@ -229,23 +229,6 @@ $(document).ready(() => {
 
   displayName(userId);
 
-  // display registration when logged out
-  // not functioning atm
-  $('#log-out').on('click', '#click', function(e) {
-    e.preventDefault();
-    $.ajax({
-      url: `/login/logout/`,
-      method: 'POST',
-      success: function() {
-        $('.new-user').show();
-        $('.new-user').hide();
-      },
-      error: function (error) {
-        console.log('Error:', error);
-      }
-    });
-  });
-
 
   const loadCreatedEvents = function (userId) {
     $.ajax({
@@ -262,6 +245,11 @@ $(document).ready(() => {
 
   loadEvents();
   loadCreatedEvents(userId);
+
+  // if not logged in, remove my events/favourites function
+  if(!userId) {
+
+  };
 
 
   //move marker var outside of event listener
@@ -410,7 +398,7 @@ $(document).ready(() => {
   //edit event form
   $('.edit-event-section')
     .append(`
-   <form id="edit-event-form">
+   <form id="edit-event-form" autocomplete="off">
      <input class="event-input" type="text" id="edit-name" placeholder="event name" name="name" required>
      <input class="event-input" type="text" id="edit-venue" name="venue" placeholder="venue" required>
      <input class="event-input" type="text" id="edit-city" placeholder="city" name="city" required>
