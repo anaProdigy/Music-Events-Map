@@ -32,13 +32,13 @@ router.get('/created/:user_id', (req, res) => {
     });
 });
 
-// Get favorite events for a user
-router.get('/favorite/:userId', (req, res) => {
+// Get favourite events for a user
+router.get('/favourite/:userId', (req, res) => {
   const userId = req.params.userId;
 
-  eventQueries.getFavoriteEvents(userId)
-    .then(favoriteEvents => {
-      res.json({ favoriteEvents });
+  eventQueries.getFavouriteEvents(userId)
+    .then(favouriteEvents => {
+      res.json({ favouriteEvents });
     })
     .catch(err => {
       res.status(500).json({ error: err.message });
@@ -68,18 +68,18 @@ router.post('/', (req, res) => {
     });
 });
 
-// Add favorite event POST /api/events/favorite
-router.post('/favorite', (req, res) => {
+// Add favourite event POST /api/events/favourite
+router.post('/favourite', (req, res) => {
   const userId = req.cookies.user_id;
   const { eventId } = req.body;
-  // Call the addFavoriteEvent function with the userId and eventId
-  eventQueries.addFavoriteEvent(userId, eventId)
-    .then((favoriteEvent) => {
-      // Return the added favorite event as the response
-      res.json({ favoriteEvent });
+  // Call the addFavouriteEvent function with the userId and eventId
+  eventQueries.addFavouriteEvent(userId, eventId)
+    .then((favouriteEvent) => {
+      // Return the added favourite event as the response
+      res.json({ favouriteEvent });
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Failed to add event to favorites' });
+      res.status(500).json({ error: 'Failed to add event to favourites' });
     });
 });
 
@@ -120,12 +120,12 @@ router.delete('/:eventId', (req, res) => {
     });
 });
 
-// DELETE FROM FAVORITE EVNETS
-router.delete('/favorites/:eventId', (req, res) => {
+// DELETE FROM FAVOURITE EVNETS
+router.delete('/favourites/:eventId', (req, res) => {
   const userId = req.cookies.user_id;
   const eventId = req.params.eventId;
 
-  eventQueries.deleteFavoriteEvents(userId, eventId)
+  eventQueries.deleteFavouriteEvents(userId, eventId)
     .then(() => {
       console.log("FIRE", eventId);
       res.json({ message: 'Event deleted successfully' });

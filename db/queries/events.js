@@ -1,12 +1,11 @@
 const db = require('../connection');
-//changed query to be able to display favorite red heart on first load, joined 2 tables
+//changed query to be able to display favourite red heart on first load, joined 2 tables
 // Return all events
 const getEvents = (userId) => {
   if (userId) {
     return db.query(`SELECT *, music_events.id as id FROM music_events LEFT JOIN user_events ON music_events.id = user_events.music_event_id AND user_events.user_id= $1`, [userId])
-      //CHANGE TO RESULT????
-      .then(data => {
-        return data.rows;
+      .then(result => {
+        return result.rows;
       })
       .catch((error) => {
         throw error;
@@ -24,10 +23,10 @@ const getEvents = (userId) => {
 // Return user-created events
 const getCreatedEvents = (userId) => {
   const query = 'SELECT * FROM music_events WHERE creator_id = $1';
-//CHANGE TO RESULT????
+
   return db.query(query, [userId])
-    .then(data => {
-      return data.rows;
+    .then(result => {
+      return result.rows;
     })
     .catch((error) => {
       throw error;
@@ -35,8 +34,8 @@ const getCreatedEvents = (userId) => {
 };
 
 
-//get favorite events from user_events table
-const getFavoriteEvents = (userId) => {
+//get favourite events from user_events table
+const getFavouriteEvents = (userId) => {
   return db.query(
     `SELECT music_events.*
     FROM user_events
@@ -44,15 +43,14 @@ const getFavoriteEvents = (userId) => {
     WHERE user_events.user_id = $1`,
     [userId]
   )
-    .then((data) => {
+    .then((result) => {
 
-      return data.rows;
+      return result.rows;
     })
     .catch((error) => {
       throw error;
     });
 };
-
 
 // Add new event to music_events
 const addEvent = function (event) {
@@ -75,8 +73,8 @@ const addEvent = function (event) {
     })
 };
 
-//add favorite event to the table user_events
-const addFavoriteEvent = (userId, eventId) => {
+//add favourite event to the table user_events
+const addFavouriteEvent = (userId, eventId) => {
   const queryString = `
     INSERT INTO user_events (user_id, music_event_id)
     VALUES ($1, $2)
@@ -123,16 +121,17 @@ const deleteEvent = (eventId) => {
       throw error
     });
 };
-// Delete favorite event from user_events table
-const deleteFavoriteEvents = (userId, eventId) => {
+
+// Delete favourite event from user_events table
+const deleteFavouriteEvents = (userId, eventId) => {
   return db.query('DELETE FROM user_events WHERE user_id = $1 AND music_event_id = $2', [userId, eventId])
     .then((result) => {
-      console.log('Favorite event deleted successfully', eventId);
-      return 'Favorite event deleted successfully';
+      console.log('Favourite event deleted successfully', eventId);
+      return 'Favourite event deleted successfully';
     })
     .catch((error) => {
       throw error;
     });
 };
 
-module.exports = { getEvents, addEvent, editEvent, deleteEvent, getCreatedEvents, getFavoriteEvents, deleteFavoriteEvents, addFavoriteEvent };
+module.exports = { getEvents, addEvent, editEvent, deleteEvent, getCreatedEvents, getFavouriteEvents, deleteFavouriteEvents, addFavouriteEvent };
