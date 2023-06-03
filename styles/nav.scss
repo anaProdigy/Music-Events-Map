@@ -46,3 +46,20 @@ nav.navbar {
     }
   }
 }
+
+.login-form {
+  display: flex;
+}
+.login{
+  background: rgb(89, 10, 15) !important;
+  background: linear-gradient(0deg, rgba(89, 10, 15, 1) 0%, rgba(153, 46, 164, 1) 75%) !important;
+  color: seashell;
+  padding: 0;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-left: 1em;
+}
+button.login:hover {
+  background: rgb(89, 10, 15) !important;
+}
+

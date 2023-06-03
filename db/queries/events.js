@@ -2,15 +2,23 @@ const db = require('../connection');
 //changed query to be able to display favorite red heart on first load, joined 2 tables
 // Return all events
 const getEvents = (userId) => {
-  return db.query(`SELECT *, music_events.id as id FROM music_events LEFT JOIN user_events ON music_events.id = user_events.music_event_id AND user_events.user_id= $1`, [userId])
-  //CHANGE TO RESULT????
-    .then(data => {
-      return data.rows;
+  if (userId) {
+    return db.query(`SELECT *, music_events.id as id FROM music_events LEFT JOIN user_events ON music_events.id = user_events.music_event_id AND user_events.user_id= $1`, [userId])
+      //CHANGE TO RESULT????
+      .then(data => {
+        return data.rows;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+  return db.query('SELECT * FROM music_events;')
+    .then(result => {
+      return result.rows;
     })
-     .catch ((error) => {
-       throw error;
-       });
-
+    .catch((error) => {
+      throw error;
+    });
 };
 
 // Return user-created events
