@@ -29,6 +29,9 @@ nav.navbar {
       text-align: end;
       color: white;
       font-size: larger;
+      margin: -0.35em;
+      padding-right: 1em;
+      padding-bottom: 0.3em;
     }
 
     a.nav-link:hover {
@@ -62,7 +65,7 @@ nav.navbar {
       background: none;
       border: none;
       padding: 0;
-      padding-top: 5em;
+      margin: 5em;
       cursor: pointer;
       color: white;
       display: flex;
