@@ -129,13 +129,13 @@ $(document).ready(() => {
         markers[event.id] = marker;
 
         //event.music_event_id is for checking favourite
-        const popupContent = `
+        const popupContent =`
+        <h3><b>${event.name}</b></h3>
+        <p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
+        <p>${event.description}<p id="collapsible"><strong>. . .</strong>
         <div class="favourite-icon ${event.music_event_id ? 'favourited' : ''}" id=${event.id}>
-        <i class="fa fa-heart"></i>
-        </div>
-
-        <h3><b>${event.name}</b></h3><p>${dayjs(event.start_date).format('MMMM D, YYYY')}</p>
-        <p>${event.description}<p id="collapsible"><strong>. . .</strong></p>
+        <i class="fa fa-heart fa-2x"></i>
+        </div></p>
         `;
         const popupExpansion = `
         <div id="expand">
