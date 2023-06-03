@@ -255,7 +255,11 @@ $(document).ready(() => {
         };
       });
       // to toggle add event form on click of add button in popup
-      $('.marker-submit-button:visible').click(function () {
+      $('.marker-submit-button:visible').click(function (e) {
+        if (!userId) {
+          alert ('You must be logged in to add an event!');
+          return;
+        }
         $('.add-event-section').slideToggle();
         map.closePopup();
         $('#name').focus();
