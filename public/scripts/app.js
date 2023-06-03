@@ -2,7 +2,6 @@
 //global object to store created marker, need for deleting them
 const markers = {};
 
-
 //return user id number from cookies to make userId dynamic, MOVED HERE TO BE AVAILABLE GLOBALLY
 const getCookie = (cname) => {
   let name = cname + "=";
@@ -23,24 +22,17 @@ const getCookie = (cname) => {
 
 $(document).ready(() => {
   const markersMax = 2000;
-  // old code to show openmaps tile map
-  // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //   attribution: '&copy; <a href="https://osm.org/copyright%22%3EOpenStreetMap</a> contributors'
-  // }).addTo(map);
 
-
+  // map tile layers
   // openstreetmaps map
   const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright%22%3EOpenStreetMap</a> contributors'
   });
 
-
-  // we need to confirm terms of use for the google stuff
   // google streets map
   const googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
   });
-
 
   // google hybrid map
   const googleHybrid = L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', {
@@ -48,31 +40,31 @@ $(document).ready(() => {
   });
 
 
-  // old code defining map and where it is centered
-  // let map = L.map('map').setView([52.268112, -113.811241], 5);
-
-
-  // implement layers control
+  // display the map on the page
   let map = L.map('map', {
     center: [54.36263970537757, -110.03906250000001],
     zoom: 5,
     layers: [osm]
   });
+
   //create layers for all events and created events
   const allEventsLayerGroup = L.layerGroup().addTo(map);
   const createdEventsLayerGroup = L.layerGroup().addTo(map);
-  // base layers we want to switch between in layers control
+
+  // base layer options we want to switch between in layers control
   const baseMaps = {
     "OpenStreetMap": osm,
     "Google Streets": googleStreets,
     "Google Hybrid": googleHybrid
   };
+
+  // filter options for events, user created and all events
   const overlayMaps = {
     "All Events": allEventsLayerGroup,
     "My events": createdEventsLayerGroup
   };
 
-
+  // map marker icon for all events
   const allEventsIcon = L.icon({
     iconUrl: '../icons/musicPurple.png',
     iconSize: [65, 60],
@@ -80,7 +72,7 @@ $(document).ready(() => {
     popupAnchor: [0, -60]
   });
 
-
+  // map marker icon for user created events
   const createdIcon = L.icon({
     iconUrl: '../icons/musicBlue.png',
     iconSize: [65, 60],
@@ -88,17 +80,16 @@ $(document).ready(() => {
     popupAnchor: [0, -60]
   });
 
+  // if there is a logged in user, display "My Events" and "Favourites" drop down menus
   let userId = parseInt(getCookie("user_id"));
   if(userId) {
     $('.container-dropdowns').show();
   }
 
-
-  // display layers control and make it always visible in the top right corner, we can filter from here
+  // display layers control and make it always visible in the top right corner, allowing us to switch map tiles and filter events created or all
   const layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
-
-  //display leaflet-geosearch on map to search for events by city
+  //display leaflet-geosearch on map to search for events by city or address
   const provider = new window.GeoSearch.OpenStreetMapProvider();
   const search = new GeoSearch.GeoSearchControl({
     provider: provider,
@@ -108,21 +99,23 @@ $(document).ready(() => {
   });
   map.addControl(search);
 
+
   let markersGroup = L.layerGroup();
 
   map.addLayer(markersGroup);
 
+  // function that renders markers from events from the db
   const renderMarkers = function (events, isCreatedByCurrentUser) {
-
     // helper function that determines if a date is before current date
     const isInThePast = function (date) {
       const today = new Date().toISOString().slice(0, 10);
-
       if (date < today && date !== today) {
         return true;
       }
       return false;
     };
+
+    // loop through events
     for (const event of events) {
       // if event.end_date is before today's date, don't display the event
       if (!isInThePast(event.end_date)) {
@@ -153,7 +146,6 @@ $(document).ready(() => {
         </div>
         `;
 
-
         // this won't work twice in a row ?
         const onPopupOpen = function () {
           $('#collapsible').click(function (e) {
@@ -167,7 +159,6 @@ $(document).ready(() => {
         marker.bindPopup(popupContent + popupExpansion);
         marker.on('popupopen', onPopupOpen);
 
-
         // bounds.extend([event.latitude, event.longitude]);
         if (isCreatedByCurrentUser) {
           createdEventsLayerGroup.addLayer(marker);
@@ -176,12 +167,9 @@ $(document).ready(() => {
         }
       }
     }
-
-
-    // fit map to bounds
-    // map.fitBounds(bounds);
-    // console.log("markersLength", Object.keys(markers).length);
   };
+
+  // load events from API
   const loadEvents = function () {
     $.ajax({
       url: '/api/events',
@@ -218,7 +206,7 @@ $(document).ready(() => {
 
   displayName(userId);
 
-
+  // a function that loads events created by the user
   const loadCreatedEvents = function (userId) {
     if (!userId) return;
     $.ajax({
@@ -241,7 +229,6 @@ $(document).ready(() => {
 
   };
 
-
   //move marker var outside of event listener
   let marker;
   map.on('click', function (e) {
@@ -259,7 +246,6 @@ $(document).ready(() => {
     // Function to handle add event/delete marker on marker popup open
     function onPopupOpen() {
       let tempMarker = this;
-
 
       // To remove marker on click of delete button in the popup of marker
       $('.marker-delete-button:visible').click(function () {
@@ -282,16 +268,17 @@ $(document).ready(() => {
         }
       });
     };
+
     //CUSTOM ICON
     const markerOptions = {
       icon: createdIcon
     };
+
     if (markersCount < markersMax) {
       marker = L.marker(e.latlng, markerOptions).addTo(map)
         .bindPopup(`<b>Add event to this location?</b><br><button type='submit' class='marker-submit-button'>Yes</button>
        <button type='delete' class='marker-delete-button'>No</button>`);
       marker.on('popupopen', onPopupOpen)
-        // marker.on('popupclose', onPopupClose)
         .openPopup();
 
       marker._popup._closeButton.onclick = function () {
@@ -301,7 +288,6 @@ $(document).ready(() => {
         map.removeLayer(marker);
         return;
       };
-
     };
 
     // to remove marker and close form when 'cancel' button is clicked
@@ -620,10 +606,3 @@ $(document).ready(() => {
   });
   //  addCreatedEventToList();
 });
-
-
-
-
-
-
-
