@@ -1,20 +1,15 @@
 nav.navbar {
   display: flex;
   justify-content: space-around;
-  padding-top: 1em;
-  padding-bottom: 0;
+  padding: 1.5em;
+  padding-bottom: 0.5em;
 
   h2 {
     font-weight: bold;
-    margin-left: 0em;
+    margin-left: -1.5em;
     font-size: 2em;
     transition: .6s ease-in-out;
     -webkit-transition: .6s ease-in-out;
-    color: seashell;
-  }
-
-  h2:hover {
-    font-size: 2.5em;
     color: transparent;
     -webkit-background-clip: text;
     background-image: rgb(134, 40, 144);
@@ -22,18 +17,17 @@ nav.navbar {
     background-clip: text;
   }
 
+  h2:hover {
+    color: white;
+  }
+
   .nav-wrapper {
     display: flex;
     align-items: center;
 
-    img {
-      height: 5em;
-      width: 5em;
-    }
-
     a.nav-link {
       text-align: end;
-      color: seashell;
+      color: white;
       font-size: larger;
     }
 
@@ -44,22 +38,35 @@ nav.navbar {
     div.logged-in {
       display: none;
     }
+
+    .login-form {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .login {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      font-size: larger;
+    }
+
+    .login:hover {
+      text-decoration: underline;
+    }
+
+    .logout {
+      background: none;
+      border: none;
+      padding: 0;
+      padding-top: 5em;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      font-size: larger;
+    }
   }
 }
-
-.login-form {
-  display: flex;
-}
-.login{
-  background: rgb(89, 10, 15) !important;
-  background: linear-gradient(0deg, rgba(89, 10, 15, 1) 0%, rgba(153, 46, 164, 1) 75%) !important;
-  color: seashell;
-  padding: 0;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  margin-left: 1em;
-}
-button.login:hover {
-  background: rgb(89, 10, 15) !important;
-}
-
