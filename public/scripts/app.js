@@ -213,6 +213,7 @@ $(document).ready(() => {
 
   // display Name when logged in
   const displayName = function (userId) {
+    if (!userId) return;
     $.ajax({
       url: `/login/name/` + userId,
       method: 'GET',
@@ -235,6 +236,7 @@ $(document).ready(() => {
 
 
   const loadCreatedEvents = function (userId) {
+    if (!userId) return;
     $.ajax({
       url: `/api/events/created/${userId}`,
       method: 'GET',

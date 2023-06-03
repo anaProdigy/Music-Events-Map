@@ -21,10 +21,10 @@ router.get('/name/:user_id', (req, res) => {
     });
 });
 
-//logout
-router.post('/logout', (req, res) => {
-  res.clearCookie();
-  res.redirect('/');
-});
+// //logout
+// router.post('/logout', (req, res) => {
+//   res.clearCookie();
+//   res.redirect('/');
+// });
 
 module.exports = router;
