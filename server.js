@@ -30,35 +30,20 @@ app.use(express.static('public'));
 app.use(cookieParser());
 
 // Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
-const userApiRoutes = require('./routes/users-api');
-const widgetApiRoutes = require('./routes/widgets-api');
-const usersRoutes = require('./routes/users');
 const eventsRoutes = require('./routes/events');
 const loginRoutes = require('./routes/login');
-const userEventsRoutes = require('./routes/user-events');
 
 // Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-// Note: Endpoints that return data (eg. JSON) usually start with `/api`
-app.use('/api/users', userApiRoutes);
-app.use('/api/widgets', widgetApiRoutes);
-app.use('/users', usersRoutes);
 app.use('/api/events', eventsRoutes);
-app.use('/login', loginRoutes)
-app.use('/api/user-events', userEventsRoutes);
-// Note: mount other resources here, using the same pattern above
+app.use('/login', loginRoutes);
 
 // Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
-
 app.get('/', (req, res) => {
   res.render('index');
   console.log('Cookies: ', req.cookies);
 });
 
-//logout here 
+//logout here
 app.post('/logout', (req, res) => {
   res.clearCookie("user_id");
   // res.status(200).send("logged-out");

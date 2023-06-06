@@ -33,8 +33,8 @@ router.get('/created/:user_id', (req, res) => {
 });
 
 // Get favourite events for a user
-router.get('/favourite/:userId', (req, res) => {
-  const userId = req.params.userId;
+router.get('/favourites/:user_id', (req, res) => {
+  const userId = req.params.user_id;
 
   eventQueries.getFavouriteEvents(userId)
     .then(favouriteEvents => {
@@ -69,7 +69,7 @@ router.post('/', (req, res) => {
 });
 
 // Add favourite event POST /api/events/favourite
-router.post('/favourite', (req, res) => {
+router.post('/favourites', (req, res) => {
   const userId = req.cookies.user_id;
   const { eventId } = req.body;
   // Call the addFavouriteEvent function with the userId and eventId
@@ -85,7 +85,6 @@ router.post('/favourite', (req, res) => {
 
 
 // edit user-created event
-//eventId IN MINE?????????????????????
 router.post('/:event_id', (req, res) => {
   const userId = req.cookies.user_id;
   const eventId = req.params.event_id;
@@ -108,8 +107,8 @@ router.post('/:event_id', (req, res) => {
 });
 
 // delete user-created event
-router.delete('/:eventId', (req, res) => {
-  const eventId = req.params.eventId;
+router.delete('/:event_id', (req, res) => {
+  const eventId = req.params.event_id;
 
   eventQueries.deleteEvent(eventId)
     .then(() => {
@@ -121,9 +120,9 @@ router.delete('/:eventId', (req, res) => {
 });
 
 // DELETE FROM FAVOURITE EVNETS
-router.delete('/favourites/:eventId', (req, res) => {
+router.delete('/favourites/:event_id', (req, res) => {
   const userId = req.cookies.user_id;
-  const eventId = req.params.eventId;
+  const eventId = req.params.event_id;
 
   eventQueries.deleteFavouriteEvents(userId, eventId)
     .then(() => {
