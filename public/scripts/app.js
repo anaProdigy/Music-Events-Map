@@ -448,6 +448,7 @@ $(document).ready(() => {
   $(document).on('click', '.remove-favourite-event', function() {
     // Get the event ID from the data attribute
     const eventId = $(this).attr("id");
+    console.log("line 451", this)
 
 
     // Call a function to remove the event from favourites
@@ -465,10 +466,11 @@ $(document).ready(() => {
 
     if (heartIcon.hasClass('favourited')) {
       // Event is already favourited, remove it from favourites
-      removeFavouriteEvent(eventId)
+      removeFavouriteEvent(userId, eventId)
         .then(() => {
           console.log('Event removed from favourites:', eventId);
           heartIcon.removeClass('favourited');
+          fetchFavouriteEvents(userId);
         })
         .catch((error) => {
           console.error('Error removing event from favourites:', error);
@@ -486,7 +488,8 @@ $(document).ready(() => {
         });
     }
   });
-  fetchFavouriteEvents(userId);
+
+  userId && fetchFavouriteEvents(userId);
 
   //edit event form
   $('.edit-event-section')
