@@ -146,7 +146,7 @@ $(document).ready(() => {
         </div>
         `;
 
-        // this won't work twice in a row ?
+        // expand/collapse popup accordion on click
         const onPopupOpen = function () {
           $('#collapsible').click(function (e) {
             if ($('#expand').is(':visible')) {
@@ -223,11 +223,6 @@ $(document).ready(() => {
 
   loadEvents();
   loadCreatedEvents(userId);
-
-  // if not logged in, remove my events/favourites function
-  if(!userId) {
-
-  };
 
   //move marker var outside of event listener
   let marker;
@@ -319,7 +314,6 @@ $(document).ready(() => {
         //reference to html
         let dropdownMenu = $('#created-events');
 
-
         // Check if any events exist
         if (events.length > 0) {
           // Clear the dropdown menu
@@ -378,7 +372,7 @@ $(document).ready(() => {
   //FETCH FAVOURITE EVENTS
   const fetchFavouriteEvents = (userId) => {
     $.ajax({
-      url: `/api/events/favourite/${userId}`,
+      url: `/api/events/favourites/${userId}`,
       method: 'GET',
       success: function(response) {
         let favouriteEvents = response.favouriteEvents;
@@ -418,7 +412,7 @@ $(document).ready(() => {
   //ADD FAVOURITE EVENTS
   const addToFavouritesList = (userId, eventId) => {
     return $.ajax({
-      url: '/api/events/favourite',
+      url: `/api/events/favourites`,
       method: 'POST',
       data: { userId, eventId },
       success: function(response) {
@@ -431,7 +425,7 @@ $(document).ready(() => {
     });
   };
 
-  //REMEVOVE FAVOURITE EVENTS
+  //REMOVE FAVOURITE EVENTS
   const removeFavouriteEvent = (userId, eventId) => {
     return $.ajax({
       url: `/api/events/favourites/${eventId}`,
@@ -608,5 +602,4 @@ $(document).ready(() => {
       });
     }
   });
-  //  addCreatedEventToList();
 });
