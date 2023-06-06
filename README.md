@@ -38,3 +38,4 @@ THe front-end (boostrap, font awesome, daysjs, etc)
 ## Features
 
 ## Final Product
+![](docs/user_profile.gif)
