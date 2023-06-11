@@ -1,6 +1,10 @@
-## 🎶🎤🎸🎶 ??? Cool Title ??? 🎶🎤🎸🎶
+## 🎶🎤🎸🎶 Western Canadian Music Scene 🎶🎤🎸🎶
 
-Lighthouse Labs Wiki Maps midterm intro...
+
+Are you interested in indie live music events? Maybe a large crowd or festival is more your scene? Then the Western Canadian Music Scene is the app for you! This full stack web app allows users to collaboratively add upcoming music events as markers on an interactive map using the Leaflet API. Whether you are an event organizer, musician, or a fan, you can access all of the app's features. This includes being able to create, edit, and delete music events; view all events and relevant event information; search for events by city/location; toggle between multiple map types, as well as add any event to a list of favourites. 
+
+
+No `gig` deal, just `Hip-Hop` to it and `Rock` on!
 
 
 ## Getting Started
@@ -10,10 +14,10 @@ Lighthouse Labs Wiki Maps midterm intro...
 3. Create the `.env` by using `.env.example` as a reference: `cp .env.example .env`.
 4. Update the `.env` file with your correct local information.
 5. Install dependencies using `npm i`.
-6. Fix to binaries for sass: `npm rebuild node-sass`.
-7. Reset database: `npm run db:reset`.
+6. Set up a local PG database via node-postgres and open it via `c\ [database-name]`.
+7. While connected to your local PG database, seed or reset the remote database with `npm run db:reset` within the project directory on terminal.
 8. Run the node server with `npm start` command from within the project directory. The app will be served at <http://localhost:8080/>.
-9. Click `Log In`/`Sign Out` from the nav bar to toggle between an authenticated user and the logged out state. 
+9. Click `Log In`/`Sign up` or `Sign Out` from the nav bar to toggle between an authenticated user and the logged-out state. 
 
 ## Dependencies
 
