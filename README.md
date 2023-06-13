@@ -1,7 +1,7 @@
 ## 🎶🎤🎸🎶 Western Canadian Music Scene 🎶🎤🎸🎶
 
 
-Are you interested in indie live music events? Maybe a large crowd or festival is more your scene? Then the Western Canadian Music Scene is the app for you! This full stack web app allows users to collaboratively add upcoming music events as markers on an interactive map using the Leaflet API. Whether you are an event organizer, musician, or a fan, you can access all of the app's features. This includes being able to create, edit, and delete music events; view all events and relevant event information; search for events by city/location; toggle between multiple map types, as well as add any event to a list of favourites. 
+Are you interested in indie live music events? Maybe a large crowd or festival is more your scene? Then the Western Canadian Music Scene is the app for you! This full-stack, single-page web application allows users to collaboratively add upcoming music events as markers on an interactive map using the Leaflet API. Whether you are an event organizer, musician, or a fan, you can access all of the app's features. This includes being able to create, edit, and delete music events; view all events and relevant event information; search for events by city/location; toggle between multiple map types, as well as add any event to a list of favourites. 
 
 
 No `gig` deal, just `Hip-Hop` to it and `Rock` on!
