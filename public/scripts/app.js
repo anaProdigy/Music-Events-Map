@@ -104,16 +104,18 @@ $(document).ready(() => {
 
   map.addLayer(markersGroup);
 
+  // helper function that determines if a date is before current date
+  const isInThePast = function(date) {
+    const today = new Date().toISOString().slice(0, 10);
+    if (date < today && date !== today) {
+      return true;
+    }
+    return false;
+  };
+
   // function that renders markers from events from the db
   const renderMarkers = function (events, isCreatedByCurrentUser) {
-    // helper function that determines if a date is before current date
-    const isInThePast = function (date) {
-      const today = new Date().toISOString().slice(0, 10);
-      if (date < today && date !== today) {
-        return true;
-      }
-      return false;
-    };
+
 
     // loop through events
     for (const event of events) {
@@ -301,6 +303,24 @@ $(document).ready(() => {
   });
 
   //ADD EVENTS
+
+  // Helper function to create a dropdown item for an event
+  const createDropdownItem = (event, dropdownMenu) => {
+    let eventItem = $('<a class="dropdown-item" href="#">')
+      .text(event.name)
+      .append(`
+      <div class="float-right">
+        <button class="edit-event">Edit</button>
+        <button class="delete-event">Delete</button>
+      </div>
+    `);
+
+    // Add event data as data attributes to the event item
+    eventItem.data('event', event);
+
+    // Add the event item to the dropdown menu
+    dropdownMenu.append(eventItem);
+  }
   // Fetch user's CREATED EVENTS LIST DROPDOWN
   const addCreatedEventToList = () => {
     $.ajax({
@@ -311,31 +331,44 @@ $(document).ready(() => {
         let events = response.events.filter(function (event) {
           return event.creator_id === userId;
         });
+        
         //reference to html
         let dropdownMenu = $('#created-events');
+        // Separate past and current events
+        const pastEvents = events.filter(function(event) {
+          return isInThePast(event.end_date);
+        });
+        const currentEvents = events.filter(function(event) {
+          return !isInThePast(event.end_date);
+        });
+
+        // Clear the dropdown menu
+        dropdownMenu.empty();
+
+        // Add current events to the dropdown menu
+        if (currentEvents.length > 0) {
+          let currentEventsLabel = $('<div class="dropdown-header">').text('Current Events');
+          dropdownMenu.append(currentEventsLabel);
+          currentEvents.forEach(function(event) {
+            createDropdownItem(event, dropdownMenu);
+          });
+        }
+
+        // Add past events to the dropdown menu
+        if (pastEvents.length > 0) {
+          let pastEventsLabel = $('<div class="dropdown-header">').text('Past Events');
+          dropdownMenu.append(pastEventsLabel);
+          pastEvents.forEach(function(event) {
+            createDropdownItem(event, dropdownMenu);
+          });
+        }
 
         // Check if any events exist
-        if (events.length > 0) {
-          // Clear the dropdown menu
-          dropdownMenu.empty();
-          // Iterate over each event and create dropdown items
-          events.forEach(function (event) {
-            let eventItem = $('<a class="dropdown-item" href="#">')
-              .text(event.name)
-              .append(`
-           <div class="float-right">
-             <button class="edit-event">Edit</button>
-             <button class="delete-event">Delete</button>
-           </div>
-           `);
-            // Add event data as data attributes to the event item
-            eventItem.data('event', event);
-            dropdownMenu.append(eventItem);
-          });
-        } else {
+        if (events.length === 0) {
           // If no events exist, display a message or placeholder item
           dropdownMenu.html('<span class="dropdown-item">No events found</span>');
         }
+       
       },
       error: function (xhr, status, error) {
         // Handle the error response
@@ -343,6 +376,8 @@ $(document).ready(() => {
       }
     });
   };
+
+
 
 
   $('#event-form').submit(function (e) {
