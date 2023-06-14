@@ -351,6 +351,7 @@ $(document).ready(() => {
           dropdownMenu.append(currentEventsLabel);
           currentEvents.forEach(function(event) {
             createDropdownItem(event, dropdownMenu);
+            // markers[event.id] = marker;
           });
         }
 
@@ -360,6 +361,7 @@ $(document).ready(() => {
           dropdownMenu.append(pastEventsLabel);
           pastEvents.forEach(function(event) {
             createDropdownItem(event, dropdownMenu);
+            // markers[event.id] = marker;
           });
         }
 
