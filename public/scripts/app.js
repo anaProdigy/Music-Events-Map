@@ -644,8 +644,15 @@ $(document).ready(() => {
           eventItem.remove();
 
           //REMOVE MARKER
+          // Remove marker from map and markers object
+          // if (markers[event.id]) {
+          //   markers[event.id].remove(); // Remove marker from the map
+          //   delete markers[event.id]; // Remove marker from the markers object
+          // }
+          // loadEvents();
+          // loadCreatedEvents(userId);
           markers[event.id].remove();
-          console.log("line644", markers[event.id])
+          // console.log("line644", markers[event.id])
         },
         error: function (xhr, status, error) {
           // Handle the error response
