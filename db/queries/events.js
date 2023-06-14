@@ -75,21 +75,26 @@ const addEvent = function (event) {
 
 //add favourite event to the table user_events
 const addFavouriteEvent = (userId, eventId) => {
-  const queryString = `
+
+  return db.query("SELECT * FROM user_events WHERE user_id = $1 AND music_event_id=$2;", [userId, eventId ])
+  .then ((result) => {
+    if(result.rows[0]) return result.rows;
+
+    const queryString = `
     INSERT INTO user_events (user_id, music_event_id)
     VALUES ($1, $2)
     RETURNING *;
   `;
-  const queryParams = [userId, eventId];
+    const queryParams = [userId, eventId];
 
-  return db.query(queryString, queryParams)
-    .then((result) => {
-      return result.rows;
-    })
-    .catch((error) => {
-      throw error;
-    });
+    return db.query(queryString, queryParams)
+      .then((result) => {
+        return result.rows;
+      })
 
+  })
+
+  
 };
 
 // Update music_events via edit form

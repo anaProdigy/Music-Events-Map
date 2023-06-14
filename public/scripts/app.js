@@ -410,6 +410,7 @@ $(document).ready(() => {
       url: `/api/events/favourites/${userId}`,
       method: 'GET',
       success: function(response) {
+        console.log("line413", response)
         let favouriteEvents = response.favouriteEvents;
         let dropdownMenu = $('#favourite-events');
 
@@ -420,7 +421,7 @@ $(document).ready(() => {
           // Iterate over each favourite event and create dropdown items
           favouriteEvents.forEach(function(event) {
 
-            $(`[id="${event.id}"] i`).addClass('favourited');
+            // $(`[id="${event.id}"] i`).addClass('favourited');
             let eventItem = $('<a class="dropdown-item" href="#">')
               .text(event.name)
               .append(`
@@ -490,10 +491,12 @@ $(document).ready(() => {
     removeFavouriteEvent(userId, eventId)
       .then(() => {
         fetchFavouriteEvents(userId);
+        loadEvents();
       });
 
   });
 
+    //HANDLE CLICK ON REMOVE FAV HEART ICON
   $(document).on('click', '.favourite-icon', function() {
     const eventId = $(this).attr("id");
     const heartIcon = $(this);
@@ -504,7 +507,10 @@ $(document).ready(() => {
         .then(() => {
           console.log('Event removed from favourites:', eventId);
           heartIcon.removeClass('favourited');
+          loadEvents();
           fetchFavouriteEvents(userId);
+      
+        
         })
         .catch((error) => {
           console.error('Error removing event from favourites:', error);
@@ -515,6 +521,8 @@ $(document).ready(() => {
         .then(() => {
           console.log('Event added to favourites:', eventId);
           heartIcon.addClass('favourited');
+          
+          loadEvents();
           fetchFavouriteEvents(userId);
         })
         .catch((error) => {
