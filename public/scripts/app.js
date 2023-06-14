@@ -496,7 +496,6 @@ $(document).ready(() => {
 
   $(document).on('click', '.favourite-icon', function() {
     const eventId = $(this).attr("id");
-
     const heartIcon = $(this);
 
     if (heartIcon.hasClass('favourited')) {
@@ -523,6 +522,8 @@ $(document).ready(() => {
         });
     }
   });
+
+  
 
   userId && fetchFavouriteEvents(userId);
 
