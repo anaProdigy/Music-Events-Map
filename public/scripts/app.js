@@ -626,6 +626,7 @@ $(document).ready(() => {
     e.preventDefault();
     let eventItem = $(this).closest('.dropdown-item');
     let event = eventItem.data('event');
+   
     // Perform delete event action with the event data
     // Prompt the user for confirmation before deleting the event
     if (confirm('Are you sure you want to delete this event?')) {
@@ -641,6 +642,7 @@ $(document).ready(() => {
 
           //REMOVE MARKER
           markers[event.id].remove();
+          console.log("line644", markers[event.id])
         },
         error: function (xhr, status, error) {
           // Handle the error response
