@@ -621,6 +621,7 @@ $(document).ready(() => {
       });
     });
   });
+  
   // Handle DETELE event click
   $(document).on('click', '.delete-event', function (e) {
     e.preventDefault();
