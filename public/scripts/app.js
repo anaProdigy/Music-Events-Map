@@ -171,7 +171,7 @@ $(document).ready(() => {
     }
   };
 
-  // load events from API
+  // load events from API CHANGE NAME!!!!!!!!!!!!!!!!!!!!!
   const loadEvents = function () {
     $.ajax({
       url: '/api/events',
@@ -397,7 +397,7 @@ $(document).ready(() => {
       // console.log(response);
       $('.add-event-section').slideToggle();
       //load all events plus newly added event
-      loadEvents();
+      loadEvents(); 
       loadCreatedEvents(userId);
       //ajax
       addCreatedEventToList();
@@ -423,7 +423,7 @@ $(document).ready(() => {
           // Iterate over each favourite event and create dropdown items
           favouriteEvents.forEach(function(event) {
 
-            $(`[id="${event.id}"] i`).addClass('favourited');
+            // $(`[id="${event.id}"] i`).addClass('favourited');
             let eventItem = $('<a class="dropdown-item" href="#">')
               .text(event.name)
               .append(`
@@ -434,11 +434,16 @@ $(document).ready(() => {
             // Add event data as data attributes to the event item
             eventItem.data('event', event);
             dropdownMenu.append(eventItem);
+
+            
           });
         } else {
           // If no favourite events exist, display a message or placeholder item
           dropdownMenu.html('<span class="dropdown-item">No favourite events found</span>');
         }
+        // Update the heart icon in the popup based on the favourite status
+       
+
       },
       error: function(xhr, status, error) {
         // Handle the error response
@@ -446,6 +451,7 @@ $(document).ready(() => {
       }
     });
   };
+  fetchFavouriteEvents(userId);
 
   //ADD FAVOURITE EVENTS
   const addToFavouritesList = (userId, eventId) => {
@@ -469,9 +475,6 @@ $(document).ready(() => {
       url: `/api/events/favourites/${eventId}`,
       method: 'DELETE',
       success: function(response) {
-
-
-
         // Reload the favourite events dropdown or update the UI accordingly
         fetchFavouriteEvents(userId);
       },
@@ -486,16 +489,13 @@ $(document).ready(() => {
   $(document).on('click', '.remove-favourite-event', function() {
     // Get the event ID from the data attribute
     const eventId = $(this).attr("id");
-    console.log("line 451", this)
-
-
+    //console.log("line ", this)
     // Call a function to remove the event from favourites
     removeFavouriteEvent(userId, eventId)
       .then(() => {
         fetchFavouriteEvents(userId);
         loadEvents();
       });
-
   });
 
     //HANDLE CLICK ON REMOVE FAV HEART ICON
@@ -509,9 +509,9 @@ $(document).ready(() => {
         .then(() => {
           console.log('Event removed from favourites:', eventId);
           heartIcon.removeClass('favourited');
-          loadCreatedEvents(userId);
+          
           fetchFavouriteEvents(userId);
-      
+          loadCreatedEvents(userId);
         
         })
         .catch((error) => {
@@ -524,8 +524,9 @@ $(document).ready(() => {
           console.log('Event added to favourites:', eventId);
           heartIcon.addClass('favourited');
           
-          loadCreatedEvents(userId);
+       
           fetchFavouriteEvents(userId);
+          loadCreatedEvents(userId);
         })
         .catch((error) => {
           console.error('Error adding event to favourites:', error);
@@ -537,9 +538,13 @@ $(document).ready(() => {
 
   userId && fetchFavouriteEvents(userId);
 
-  //edit event form
-  $('.edit-event-section')
-    .append(`
+
+  // EDIT events
+  $(document).on('click', '.edit-event', function (e) {
+    e.preventDefault();
+    //move event form here so it it is called every time when the button is clicked and new value populate it, then saving edit will save info with current values 
+    $('.edit-event-section')
+      .html(`
    <form id="edit-event-form" autocomplete="off">
      <input class="event-input" type="text" id="edit-name" placeholder="event name" name="name" required>
      <input class="event-input" type="text" id="edit-venue" name="venue" placeholder="venue" required>
@@ -558,16 +563,11 @@ $(document).ready(() => {
    </form>
    `);
 
-  $('.edit-event-section').hide();
-
-  // EDIT events
-  $(document).on('click', '.edit-event', function (e) {
-    e.preventDefault();
-    //show form
     $('.edit-event-section').slideToggle();
     $('#edit-name').focus();
     //access event to prepopulate form fields
     let eventItem = $(this).closest('.dropdown-item');
+ 
     let event = eventItem.data('event');
     // convert store date to proper format
     let startDate = dayjs(event.start_date).format('YYYY-MM-DD');
@@ -600,9 +600,11 @@ $(document).ready(() => {
       const form = $(this);
       const data = $(this).serialize();
       console.log('form and date', data);
+      console.log("line 605",`url:/api/events/${event.id}`)
       //edit request
       $.ajax({
         url: '/api/events/' + event.id,
+
         method: 'POST',
         data: data,
         success: function (response) {
@@ -610,9 +612,14 @@ $(document).ready(() => {
           // clear form
           form.trigger('reset');
           // form.hide(500);
-          $('.edit-event-section').hide();
-          console.log(response);
-          loadEvents();
+          // $('.edit-event-section').hide();
+
+          //edit event form
+          $('.edit-event-section').hide(500);
+          userId && fetchFavouriteEvents(userId);
+
+          console.log("lone 615 edit",response);
+          //loadEvents();
           loadCreatedEvents(userId);
           addCreatedEventToList();
         },
