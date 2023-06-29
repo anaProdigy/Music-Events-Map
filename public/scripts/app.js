@@ -412,7 +412,7 @@ $(document).ready(() => {
       url: `/api/events/favourites/${userId}`,
       method: 'GET',
       success: function(response) {
-        console.log("line413", response)
+        // console.log("line413", response)
         let favouriteEvents = response.favouriteEvents;
         let dropdownMenu = $('#favourite-events');
 
@@ -423,7 +423,7 @@ $(document).ready(() => {
           // Iterate over each favourite event and create dropdown items
           favouriteEvents.forEach(function(event) {
 
-            // $(`[id="${event.id}"] i`).addClass('favourited');
+            $(`[id="${event.id}"] i`).addClass('favourited');
             let eventItem = $('<a class="dropdown-item" href="#">')
               .text(event.name)
               .append(`
@@ -509,7 +509,7 @@ $(document).ready(() => {
         .then(() => {
           console.log('Event removed from favourites:', eventId);
           heartIcon.removeClass('favourited');
-          loadEvents();
+          loadCreatedEvents(userId);
           fetchFavouriteEvents(userId);
       
         
@@ -524,7 +524,7 @@ $(document).ready(() => {
           console.log('Event added to favourites:', eventId);
           heartIcon.addClass('favourited');
           
-          loadEvents();
+          loadCreatedEvents(userId);
           fetchFavouriteEvents(userId);
         })
         .catch((error) => {
@@ -650,7 +650,7 @@ $(document).ready(() => {
           //   delete markers[event.id]; // Remove marker from the markers object
           // }
           // loadEvents();
-          // loadCreatedEvents(userId);
+          loadCreatedEvents(userId);
           markers[event.id].remove();
           // console.log("line644", markers[event.id])
         },
