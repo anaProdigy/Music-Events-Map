@@ -410,7 +410,7 @@ $(document).ready(() => {
   //adds all created events to the dropdowm list CREATED
   addCreatedEventToList();
 
-  //FETCH FAVOURITE EVENTS
+  //FETCH FAVOURITE EVENTS TO THE LIST
   const fetchFavouriteEvents = (userId) => {
     $.ajax({
       url: `/api/events/favourites/${userId}`,
@@ -419,14 +419,15 @@ $(document).ready(() => {
         // console.log("line413", response)
         let favouriteEvents = response.favouriteEvents;
         let dropdownMenu = $('#favourite-events');
-
+        
         // Check if any favourite events exist
         if (favouriteEvents.length > 0) {
           // Clear the dropdown menu
           dropdownMenu.empty();
           // Iterate over each favourite event and create dropdown items
           favouriteEvents.forEach(function(event) {
-
+         
+            
              //$(`[id="${event.id}"] i`).addClass('favourited');
             let eventItem = $('<a class="dropdown-item" href="#">')
               .text(event.name)
@@ -438,7 +439,12 @@ $(document).ready(() => {
             // Add event data as data attributes to the event item
             eventItem.data('event', event);
             dropdownMenu.append(eventItem);
-
+            //console.log("event", event)
+            if (event.id) {
+              $(`#${event.id} .fa-heart`).addClass('favourited');
+            } else {
+              $(`#${event.id} .fa-heart`).removeClass('favourited');
+            }
             // $(`#${event.id} i`).addClass('favourited');
           });
         } else {
@@ -456,6 +462,7 @@ $(document).ready(() => {
     });
   };
   fetchFavouriteEvents(userId);
+ 
 
   //ADD FAVOURITE EVENTS
   const addToFavouritesList = (userId, eventId) => {
@@ -598,7 +605,7 @@ $(document).ready(() => {
     });
     //when edit event button is clicked
     $('#edit-event-form').on('submit', function (e) {
-      console.log('Button clicked, performing ajax call...');
+      //console.log('Button clicked, performing ajax call...');
       e.preventDefault();
       
       const form = $(this);
@@ -611,7 +618,7 @@ $(document).ready(() => {
         method: 'POST',
         data: data,
         success: function (response) {
-          console.log('Sending form data to server');
+          //console.log('Sending form data to server');
           // clear form
           form.trigger('reset');
           // form.hide(500);
