@@ -21,6 +21,12 @@
 .dropdown button.dropdown-toggle:hover {
   background: rgb(2, 0, 36);
 }
+.dropdown-header {
+  font-weight:bold;
+  color: black;
+  font-size: 20px;
+  margin-top: 15px;
+}
 
 
 button.edit-event {

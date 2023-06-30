@@ -75,21 +75,24 @@ const addEvent = function (event) {
 
 //add favourite event to the table user_events
 const addFavouriteEvent = (userId, eventId) => {
-  const queryString = `
+
+  return db.query("SELECT * FROM user_events WHERE user_id = $1 AND music_event_id=$2;", [userId, eventId ])
+  .then ((result) => {
+    if(result.rows[0]) return result.rows;
+
+    const queryString = `
     INSERT INTO user_events (user_id, music_event_id)
     VALUES ($1, $2)
     RETURNING *;
   `;
-  const queryParams = [userId, eventId];
+    const queryParams = [userId, eventId];
 
-  return db.query(queryString, queryParams)
-    .then((result) => {
-      return result.rows;
-    })
-    .catch((error) => {
-      throw error;
-    });
+    return db.query(queryString, queryParams)
+      .then((result) => {
+        return result.rows;
+      })
 
+  })
 };
 
 // Update music_events via edit form
@@ -98,13 +101,14 @@ const editEvent = (event, eventId) => {
   UPDATE music_events
   SET name = $1, description = $2, start_date = $3, end_date = $4, venue = $5, city = $6, latitude = $7, longitude = $8,
   event_link_url = $9, event_thumbnail_url = $10
-  WHERE id = $11`;
+  WHERE id = $11 RETURNING *` ;
   const queryParams = [event.name, event.description, event.start_date, event.end_date, event.venue,
   event.city, event.latitude, event.longitude, event.event_link_url, event.event_thumbnail_url, eventId];
   return db
     .query(queryString, queryParams)
+
     .then((result) => {
-      return result.rows;
+      return result.rows[0];
     })
     .catch((error) => {
       throw error;
