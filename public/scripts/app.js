@@ -401,7 +401,7 @@ $(document).ready(() => {
       // console.log(response);
       $('.add-event-section').slideToggle();
       //load all events plus newly added event
-      loadEvents(); 
+      //loadEvents(); 
       loadCreatedEvents(userId);
       //ajax
       addCreatedEventToList();
@@ -652,18 +652,15 @@ $(document).ready(() => {
           // Handle the success response
           //remove event from db and list
           eventItem.remove();
-
-          
-         
-          
           // Remove marker from the map
           if (markers[event.id]) {
             markers[event.id].remove();
             delete markers[event.id];
           }
-          //console.log("line644", markers[event.id])
+
           //loadEvents();
           loadCreatedEvents(userId);
+          addCreatedEventToList();
           userId && fetchFavouriteEvents(userId);
         },
         error: function (xhr, status, error) {
