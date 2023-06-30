@@ -427,7 +427,7 @@ $(document).ready(() => {
           // Iterate over each favourite event and create dropdown items
           favouriteEvents.forEach(function(event) {
 
-            // $(`[id="${event.id}"] i`).addClass('favourited');
+             //$(`[id="${event.id}"] i`).addClass('favourited');
             let eventItem = $('<a class="dropdown-item" href="#">')
               .text(event.name)
               .append(`
@@ -439,7 +439,7 @@ $(document).ready(() => {
             eventItem.data('event', event);
             dropdownMenu.append(eventItem);
 
-            
+            // $(`#${event.id} i`).addClass('favourited');
           });
         } else {
           // If no favourite events exist, display a message or placeholder item
@@ -498,7 +498,7 @@ $(document).ready(() => {
     removeFavouriteEvent(userId, eventId)
       .then(() => {
         fetchFavouriteEvents(userId);
-        loadEvents();
+        //loadEvents();
       });
   });
 
