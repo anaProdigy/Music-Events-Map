@@ -185,28 +185,7 @@ $(document).ready(() => {
     });
   };
 
-  // display Name when logged in
-  const displayName = function (userId) {
-    if (!userId) return;
-    $.ajax({
-      url: `/login/name/` + userId,
-      method: 'GET',
-      success: function(data) {
-        let name = data.userName[0]['name'];
-        // show logged-in
-        $('.logged-in').show();
-        // set nav bar to display userName
-        $('.first-name').text(`Hi, ${name}!`);
-        // hide registration buttons
-        $('.new-user').hide();
-      },
-      error: function (error) {
-        console.log('Error:', error);
-      }
-    });
-  };
 
-  displayName(userId);
 
   // a function that loads events created by the user
   const loadCreatedEvents = function (userId) {
@@ -226,6 +205,28 @@ $(document).ready(() => {
   loadEvents();
   loadCreatedEvents(userId);
 
+  // display Name when logged in
+  const displayName = function(userId) {
+    if (!userId) return;
+    $.ajax({
+      url: `/login/name/` + userId,
+      method: 'GET',
+      success: function(data) {
+        let name = data.userName[0]['name'];
+        // show logged-in
+        $('.logged-in').show();
+        // set nav bar to display userName
+        $('.first-name').text(`Hi, ${name}!`);
+        // hide registration buttons
+        $('.new-user').hide();
+      },
+      error: function(error) {
+        console.log('Error:', error);
+      }
+    });
+  };
+
+  displayName(userId);
   //move marker var outside of event listener
   let marker;
   map.on('click', function (e) {
@@ -345,31 +346,34 @@ $(document).ready(() => {
         // Clear the dropdown menu
         dropdownMenu.empty();
 
-        // Add current events to the dropdown menu
+        // Add "Current events" label to the dropdown menu
+        let currentEventsLabel = $('<div class="dropdown-header">').text('Current Events');
+        dropdownMenu.append(currentEventsLabel);
+        //check if there are current events
         if (currentEvents.length > 0) {
-          let currentEventsLabel = $('<div class="dropdown-header">').text('Current Events');
-          dropdownMenu.append(currentEventsLabel);
           currentEvents.forEach(function(event) {
             createDropdownItem(event, dropdownMenu);
             // markers[event.id] = marker;
           });
+        } else {
+          let noCurrentEventsLabel = $('<a class="dropdown-item disabled">').text('No Current Events');
+          dropdownMenu.append(noCurrentEventsLabel);
         }
 
         // Add past events to the dropdown menu
+        let pastEventsLabel = $('<div class="dropdown-header">').text('Past Events');
+        dropdownMenu.append(pastEventsLabel);
+
         if (pastEvents.length > 0) {
-          let pastEventsLabel = $('<div class="dropdown-header">').text('Past Events');
-          dropdownMenu.append(pastEventsLabel);
           pastEvents.forEach(function(event) {
             createDropdownItem(event, dropdownMenu);
             // markers[event.id] = marker;
           });
+        } else {
+          let noPastEventsLabel = $('<a class="dropdown-item disabled">').text('No Past Events');
+          dropdownMenu.append(noPastEventsLabel);
         }
 
-        // Check if any events exist
-        if (events.length === 0) {
-          // If no events exist, display a message or placeholder item
-          dropdownMenu.html('<span class="dropdown-item">No events found</span>');
-        }
        
       },
       error: function (xhr, status, error) {
@@ -596,11 +600,10 @@ $(document).ready(() => {
     $('#edit-event-form').on('submit', function (e) {
       console.log('Button clicked, performing ajax call...');
       e.preventDefault();
-      console.log("when is this called?");
+      
       const form = $(this);
       const data = $(this).serialize();
-      console.log('form and date', data);
-      console.log("line 605",`url:/api/events/${event.id}`)
+      
       //edit request
       $.ajax({
         url: '/api/events/' + event.id,
@@ -618,7 +621,7 @@ $(document).ready(() => {
           $('.edit-event-section').hide(500);
           userId && fetchFavouriteEvents(userId);
 
-          console.log("lone 615 edit",response);
+      
           //loadEvents();
           loadCreatedEvents(userId);
           addCreatedEventToList();
@@ -650,16 +653,18 @@ $(document).ready(() => {
           //remove event from db and list
           eventItem.remove();
 
-          //REMOVE MARKER
-          // Remove marker from map and markers object
-          // if (markers[event.id]) {
-          //   markers[event.id].remove(); // Remove marker from the map
-          //   delete markers[event.id]; // Remove marker from the markers object
-          // }
-          // loadEvents();
+          
+         
+          
+          // Remove marker from the map
+          if (markers[event.id]) {
+            markers[event.id].remove();
+            delete markers[event.id];
+          }
+          //console.log("line644", markers[event.id])
+          //loadEvents();
           loadCreatedEvents(userId);
-          markers[event.id].remove();
-          // console.log("line644", markers[event.id])
+          userId && fetchFavouriteEvents(userId);
         },
         error: function (xhr, status, error) {
           // Handle the error response
