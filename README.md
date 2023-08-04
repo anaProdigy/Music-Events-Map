@@ -6,6 +6,8 @@ Are you interested in indie live music events? Maybe a large crowd or festival i
 
 No `gig` deal, just `Hip-Hop` to it and `Rock` on!
 
+## Final Product
+![](docs/music_app.gif)
 
 ## Getting Started
 
@@ -54,5 +56,4 @@ THe front-end (boostrap, font awesome, daysjs, etc)
 - Add an event to the `Favourites` dropdown by clicking the `🤍` in the event popup, at which point it will turn `💗`, indicating it has been added
 - `Remove` an event from `Favourites` within the dropdown
 
-## Final Product
-![](docs/user_profile.gif)
+
