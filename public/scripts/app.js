@@ -374,6 +374,19 @@ $(document).ready(() => {
           dropdownMenu.append(noPastEventsLabel);
         }
 
+        // Add event click event listener
+        $('.dropdown-item', dropdownMenu).on('click', function() {
+          // Retrieve the event data from the data attributes
+          let eventData = $(this).data('event');
+
+          // Retrieve latitude and longitude of the event
+          let lat = eventData.latitude;
+          let lng = eventData.longitude;
+
+          // Center the map on the event marker and zoom in
+          map.setView([lat, lng], 15); // Adjust the zoom level as needed
+        });
+
        
       },
       error: function (xhr, status, error) {
@@ -440,6 +453,24 @@ $(document).ready(() => {
             eventItem.data('event', event);
             dropdownMenu.append(eventItem);
             //console.log("event", event)
+
+            // Add a click event listener to the event item
+            eventItem.on('click', function() {
+              console.log("eventItem", eventItem);
+              // Retrieve the event data from the data attributes
+              let eventData = $(this).data('event');
+
+              // Retrieve latitude and longitude of the event
+              let lat = eventData.latitude;
+              let lng = eventData.longitude
+                ;
+
+              // Center the map on the event marker and zoom in
+              map.setView([lat, lng], 15); // Adjust the zoom level as needed
+            });
+
+
+            
             if (event.id) {
               $(`#${event.id} .fa-heart`).addClass('favourited');
             } else {
