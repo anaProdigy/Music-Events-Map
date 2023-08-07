@@ -39,9 +39,9 @@ No `gig` deal, just `Hip-Hop` to it and `Rock` on!
 
 This full stack project focused on developing an API-based web page integrating complex SQL queries from a node-postgres database, complete with a user-frienly UI/UX design.  
 
-The back-end ... 
+The back-end: Node.js, Express.js
 
-THe front-end (boostrap, font awesome, daysjs, etc)
+THe front-end: JQuery, Leaflet Maps API, Boostrap, Font Awesome, Daysjs
 
 ## Features
 
