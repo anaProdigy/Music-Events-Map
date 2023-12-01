@@ -21,6 +21,21 @@ const getCookie = (cname) => {
 
 
 $(document).ready(() => {
+ 
+
+  function showLoadingMessage() {
+     alert("Loading...");
+    $("#loadingMessage").html("Loading...").show();
+    setTimeout(function() {
+      hideLoadingMessage();
+    }, 3000);
+  }
+
+  function hideLoadingMessage() {
+   
+    $("#loadingMessage").hide();
+  }
+
   const markersMax = 2000;
 
   // map tile layers
@@ -173,14 +188,33 @@ $(document).ready(() => {
 
   // load events from API CHANGE NAME!!!!!!!!!!!!!!!!!!!!!
   const loadEvents = function () {
+    showLoadingMessage();
+    // setTimeout(() => {
+    //   $.ajax({
+    //     url: '/api/someEndpoint',
+    //     method: 'GET',
+    //     success: function(data) {
+    //       console.log(data);
+    //     },
+    //     error: function(error) {
+    //       console.log('Error:', error);
+    //     },
+    //     complete: function() {
+    //       hideLoadingMessage();
+    //     }
+    //   });
+    // }, 2000);  
+
     $.ajax({
       url: '/api/events',
       method: 'GET',
       success: function (data) {
         renderMarkers(data.events, false);
+        hideLoadingMessage();
       },
       error: function (error) {
         console.log('Error:', error);
+        hideLoadingMessage();
       }
     });
   };
